@@ -16,9 +16,7 @@ bot = commands.Bot(command_prefix=get_prefix,
                    intents=discord.Intents.all(),
                    help_command=None)
 
-cogs = [
-    "cogs.mycogs", "cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"
-]
+cogs = ["cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"]
 
 for cog in cogs:
     bot.load_extension(cog)
@@ -93,11 +91,13 @@ async def reload(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
     await ctx.send(f"Done. Reloaded The `{extension}` Cog.")
 
+
 @sudo.command()
 @commands.is_owner()
 async def shutdown(ctx):
     await ctx.send("logging out... bye!")
     await ctx.bot.logout()
+
 
 keep_alive()
 bot.run(getenv("TOKEN"))
