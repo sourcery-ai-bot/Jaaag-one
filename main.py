@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix=get_prefix,
                    help_command=None)
 
 cogs = [
-    "cogs.mycogs", "cogs.moderation", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"
+    "cogs.mycogs", "cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"
 ]
 
 for cog in cogs:
