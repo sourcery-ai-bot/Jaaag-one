@@ -60,7 +60,7 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hello(self, ctx):
-        await ctx.send(f'sup {ctx.author.mention}')
+        await ctx.reply(f'sup {ctx.author.mention}!')
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)

@@ -4,7 +4,6 @@ import platform
 import json
 from datetime import datetime
 
-
 class utility(commands.Cog):
     """A cog containing some utility commands."""
     def __init__(self, bot: commands.Bot):
@@ -212,8 +211,9 @@ class utility(commands.Cog):
 
     @commands.command(name="test")
     @commands.guild_only()
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def test(self, ctx: commands.Context):
-        await ctx.reply(f"Hey {ctx.author.mention}!")
-
+        await ctx.send("I am alive!")
+    
 def setup(bot: commands.Bot):
     bot.add_cog(utility(bot))

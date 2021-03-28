@@ -6,6 +6,7 @@ from os import getenv
 from Keeping_alive import keep_alive
 import json
 from utils.util import get_prefix
+from datetime import datetime, timedelta
 
 load_dotenv()
 
@@ -78,6 +79,17 @@ async def shutdown(ctx):
     await ctx.send("logging out... bye!")
     await ctx.bot.logout()
 
+bot.launch_time = datetime.utcnow()
+
+@bot.command()
+@commands.guild_only()
+@commands.cooldown(1, 10, commands.BucketType.user)
+async def uptime(ctx):
+  delta_uptime = datetime.utcnow() - bot.launch_time
+  hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+  minutes, seconds = divmod(remainder, 60)
+  days, hours = divmod(hours, 24)
+  await ctx.send(f"The bot has been up for`{days}`days , `{hours}`hours and `{minutes}`minutes.")
 
 keep_alive()
 bot.run(getenv("TOKEN"))
