@@ -13,6 +13,7 @@ intents = Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix=get_prefix,
+                   owner_id=722168161713127435,
                    intents=discord.Intents.all(),
                    help_command=None)
 
@@ -37,6 +38,7 @@ async def on_guild_join(guild):
 
     with open("prefixes.json", "w") as f:
         json.dump(prefixes, f)
+
 
 @bot.group()
 @commands.is_owner()
