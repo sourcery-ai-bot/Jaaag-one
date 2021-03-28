@@ -13,15 +13,15 @@ class Errors(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             return
         elif isinstance(error, commands.CommandOnCooldown):
-            message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds."
+            message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds. :hourglass_flowing_sand:"
         elif isinstance(error, commands.MissingPermissions):
-            message = "Looks like are missing the required permissions to run this command."
+            message = "Looks like you are missing the required permissions to run this command. Sad..."
         elif isinstance(error, commands.UserInputError):
-            message = "Something about your input was wrong, Please try again."
+            message = "Something about your input seems really wrong, Please try again."
         else:
             message = "Oops! Something went wrong while running the command. :man_shrugging:"
 
-        await ctx.send(message, delete_after=5)
+        await ctx.send(message, delete_after=6)
 
 
 def setup(bot: commands.Bot):
