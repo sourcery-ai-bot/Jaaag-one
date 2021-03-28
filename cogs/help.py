@@ -37,7 +37,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Utility:**__",
                 value=
-                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar",
+                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar\n`uptime     :` See the bot's uptime",
                 inline=False)
             em.add_field(
                 name="__**Admin Utils:**__",
