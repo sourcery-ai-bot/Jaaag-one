@@ -38,34 +38,12 @@ async def on_guild_join(guild):
     with open("prefixes.json", "w") as f:
         json.dump(prefixes, f)
 
-
-@bot.event
-async def on_message(ctx, msg):
-
-    try:
-
-        if msg.mention[0] == bot.user:
-
-            with open("prefixes.json", "r") as f:
-                prefixes = json.load(f)
-
-            pre = prefixes[str(ctx.guild.id)]
-
-            await msg.channel.send(f"My prefix here is {pre}")
-
-    except:
-        pass
-
-    await bot.process_commands(msg)
-
-
 @bot.group()
 @commands.is_owner()
 async def sudo(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send(
-            "Use `..sudo <command>` to perform your bot admin actions."
-        )
+            "Use `..sudo <command>` to perform your bot admin actions.")
 
 
 @sudo.command()
