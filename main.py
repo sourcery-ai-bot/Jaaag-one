@@ -40,7 +40,7 @@ async def on_guild_join(guild):
 
 
 @bot.event
-async def on_messae(ctx, msg):
+async def on_message(ctx, msg):
 
     try:
 
@@ -64,7 +64,7 @@ async def on_messae(ctx, msg):
 async def sudo(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send(
-            "Base command for devs. Use `..sudo <command>` to perform bot admin actions."
+            "Use `..sudo <command>` to perform your bot admin actions."
         )
 
 
