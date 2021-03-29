@@ -9,7 +9,11 @@ class utility(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.last_msg = None
-
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        
     @commands.command(aliases=['inv'])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)

@@ -2,32 +2,35 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 
-
 class Help(commands.Cog):
-    """A cog containing help commands."""
-    def __init__(self, bot: commands.Bot):
+
+    def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+    
     @commands.group(aliases=["h"])
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
 
             em = discord.Embed(color=0x33fcff, timestamp=datetime.utcnow())
             em.set_author(
-                name="Jaaag Help Menu",
+                name=f"{self.bot.user.name} Help Menu",
                 icon_url=
-                "https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024"
+                f"{self.bot.user.avatar_url}"
             )
             em.set_footer(text="Use .. before each command")
             em.add_field(
-                name="__**Image commands:**__",
+                name="__**Images/gifs:**__",
                 value=
                 "`kekw       :` Send a quick kekw gif\n`omgwow     :` Send a quick omg gif\n`oof        :` Send a quick oof gif\n`bonk       :` Send a quick bonk gif\n`wanted     :` try this command to find out more",
                 inline=False)
             em.add_field(
                 name="__**Fun:**__",
                 value=
-                "`meme       :` Sends trending memes from reddit\n`8ball      :` Ask the 8ball a question\n`hello      :` Say hello to the bot\n`say        :` Repeats your message\n`rickroll   :` Gives you a rickroll link",
+                "`meme       :` Sends trending memes from reddit\n`8ball      :` Ask the 8ball a question\n`insult     :` Insult someone\n`hello      :` Say hello to the bot\n`say        :` Repeats your message\n`rickroll   :` Gives you a rickroll link",
                 inline=False)
             em.add_field(
                 name="__**Moderation:**__",
@@ -37,7 +40,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Utility:**__",
                 value=
-                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar\n`uptime     :` See the bot's uptime",
+                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar",
                 inline=False)
             em.add_field(
                 name="__**Admin Utils:**__",
@@ -54,9 +57,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         ema.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         ema.set_footer(text="Hosted by GhOsT#4615")
         ema.add_field(
@@ -81,9 +84,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emb.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emb.set_footer(text="Hosted by GhOsT#4615")
         emb.add_field(
@@ -107,9 +110,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emc.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emc.set_footer(text="Hosted by GhOsT#4615")
         emc.add_field(
@@ -132,9 +135,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emd.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emd.set_footer(text="Hosted by GhOsT#4615")
         emd.add_field(
@@ -163,9 +166,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         eme.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         eme.set_footer(text="Hosted by GhOsT#4615")
         eme.add_field(
@@ -189,9 +192,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emf.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emf.set_footer(text="Hosted by GhOsT#4615")
         emf.add_field(
@@ -216,9 +219,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emg.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emg.set_footer(text="Hosted by GhOsT#4615")
         emg.add_field(
@@ -242,9 +245,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emh.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emh.set_footer(text="Hosted by GhOsT#4615")
         emh.add_field(
@@ -269,9 +272,9 @@ class Help(commands.Cog):
                             color=0x33fcff,
                             timestamp=datetime.utcnow())
         emi.set_author(
-            name="Jaaag Help menu",
+            name=f"{self.bot.user.name} Help menu",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            f'{self.bot.user.avatar_url}'
         )
         emi.set_footer(text="Hosted by GhOsT#4615")
         emi.add_field(
@@ -287,6 +290,5 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emi)
 
-
-def setup(bot: commands.Bot):
+def setup(bot):
     bot.add_cog(Help(bot))

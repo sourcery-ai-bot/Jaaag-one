@@ -10,7 +10,11 @@ class Fun(commands.Cog):
     """A cog containing fun commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)

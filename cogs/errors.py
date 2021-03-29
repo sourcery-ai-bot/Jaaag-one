@@ -5,7 +5,11 @@ class Errors(commands.Cog):
     """A cog that handles on command errors."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context,
                                error: commands.CommandError):
