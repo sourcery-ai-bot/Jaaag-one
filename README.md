@@ -16,7 +16,7 @@ If you already are a discord user, then please consider inviting the instance of
 * [Flask](https://pypi.org/project/Flask/)
 * [Pillow](https://pypi.org/project/Pillow/)
 
-## Aknowledgements-
+# Aknowledgements-
 * [Rapptz](https://github.com/Rapptz), the owner of discord.py
 * All the youtube channels that helped me learn python and make this bot:
   * [freeCodeCamp](https://www.youtube.com/channel/UC8butISFwT-Wl7EV0hUK0BQ)
@@ -28,6 +28,4 @@ If you already are a discord user, then please consider inviting the instance of
   * [Tech With Tim](https://www.youtube.com/channel/UC4JX40jDee_tINbkjycV4Sg)
 
 ## Note-
-* This is not the original repository for the bot, so it doesn't have all the commits that were in the old repo. The original repo got deleted because it was a pretty big mess. 
-
 * Please don't judge the code within this repository too harshly, I'm only a beginner. 😅
