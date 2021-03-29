@@ -232,6 +232,23 @@ class utility(commands.Cog):
     async def test(self, ctx: commands.Context):
         await ctx.send("I am alive!")
       
+    @commands.command()
+    @commands.guild_only()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def source(self, ctx):
+       embed = discord.Embed(colour=0x33fcff,
+                             timestamp=ctx.message.created_at)
+       embed.set_author(
+                name=f"{self.bot.user.name} Help Menu",
+                icon_url=
+                f"{self.bot.user.avatar_url}"
+       embed.add_field(
+            name="Source Code",
+            value=
+            "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!",
+            inline=False)
+       await ctx.send(embed=embed)
+
 # Adds the extention
 def setup(bot: commands.Bot):
     bot.add_cog(utility(bot))
