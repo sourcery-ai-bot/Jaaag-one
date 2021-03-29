@@ -242,7 +242,7 @@ class utility(commands.Cog):
                               timestamp=ctx.message.created_at)
         embed.set_author(name=f"{self.bot.user.name} Help Menu",
                          icon_url=f"{self.bot.user.avatar_url}")
-        embed.set_thumbnail(url='https://hackernoon.com/images/bFFEe4dIUoXgbouiLfgW9PI9b8q1-332431x7.gif')
+        embed.set_thumbnail(url='https://user-images.githubusercontent.com/41782385/59523230-55488280-8f03-11e9-9abe-e8e0f3d9a245.gif')
         embed.add_field(
             name="Source Code",
             value=
