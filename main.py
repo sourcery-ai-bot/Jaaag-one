@@ -12,8 +12,7 @@ from datetime import datetime, timedelta
 #loads the secret file containg the bot's password
 load_dotenv()
 
-intents = Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 # defining a few things
 bot = commands.Bot(command_prefix=get_prefix,

@@ -3,7 +3,7 @@
 ## Introduction-
 Jaaag is a [discord](https://discord.com/) chatbot written in python using the [discord.py library](https://github.com/Rapptz/discord.py).
 
-If you already are a discord user, then please consider inviting the instance of the bot that I host, [here](https://cutt.ly/zzh5AGh)
+If you already are a discord user, then please consider inviting the instance of the bot that I host, [here](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)
 
 ## Before you get started...
 * Since the bot caters to discord, you might need to know the stuff and the norms of discord. [This is a beginner's guide to discord](https://support.discord.com/hc/en-us/articles/360045138571-Beginner-s-Guide-to-Discord)

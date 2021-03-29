@@ -40,7 +40,7 @@ class utility(commands.Cog):
         )
         embed.add_field(
             name="link:",
-            value="Invite the bot using [this link](https://cutt.ly/zzh5AGh)",
+            value="Invite the bot using [this link](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)",
             inline=False)
 
         await ctx.send(embed=embed)
