@@ -1,3 +1,4 @@
+# Imports
 import discord
 from discord.ext import commands
 import random
@@ -6,15 +7,18 @@ from PIL import Image
 from io import BytesIO
 
 
+# Intializing the extension
 class Fun(commands.Cog):
     """A cog containing fun commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-    
+
+    # Prints on the console when the extension is loaded 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        
+
+    # A fun 8ball command  
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -33,12 +37,7 @@ class Fun(commands.Cog):
         await ctx.reply(f':8ball: {random.choice(responses)}',
                         mention_author=True)
 
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def rickroll(self, ctx):
-        await ctx.send('Here, get ricked... https://youtu.be/dQw4w9WgXcQ')
-
+    # A fun command that sends trending memes from a subreddit as an embed
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -55,16 +54,20 @@ class Fun(commands.Cog):
                     0, 25)]['data']['url'])
                 await ctx.send(embed=embed)
 
+    # This command repeats the author's message
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def say(self, ctx, *, arg):
         await ctx.send(arg)
 
+    # A simple command that replies back to the user
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hello(self, ctx):
         await ctx.reply(f'sup {ctx.author.mention}!')
+
+    # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster. 
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -86,6 +89,14 @@ class Fun(commands.Cog):
 
         await ctx.send(file=discord.File("profile.jpg"))
     
+    # These commands are to be ignored, My friends made me add them and they have no special function other than sending a gif and a rickroll link
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def rickroll(self, ctx):
+        await ctx.send('Here, get ricked... https://youtu.be/dQw4w9WgXcQ')
+
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -114,5 +125,6 @@ class Fun(commands.Cog):
             'https://tenor.com/view/walter-bonk-walter-bonk-nelson-dog-gif-15721111def'
         )
 
+# Adds the extention
 def setup(bot: commands.Bot):
     bot.add_cog(Fun(bot))

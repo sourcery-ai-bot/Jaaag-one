@@ -1,16 +1,21 @@
+# Imports
 import discord
 from discord.ext import commands
 from datetime import datetime
 
+
+# Intializing the extension
 class Help(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
+    # Prints on the console when the extension is loaded
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
     
+    # base help command containing a list of all available commands. This is also a command group so the subcommands are like: ..help <command_name>
     @commands.group(aliases=["h"])
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -48,7 +53,8 @@ class Help(commands.Cog):
                 "`setprefix  :` Change the server's prefix for the bot\n`serverinfo :` Get some info about the guild\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
                 inline=False)
             await ctx.send(embed=em)
-
+    
+    # Help command for the kick command
     @help.command()
     async def kick(self, ctx):
         codea = """```xml\n<Syntax : ..kick <user> [reason] >```"""
@@ -76,6 +82,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=ema)
 
+    # Help command for the ban command
     @help.command()
     async def ban(self, ctx):
         codeb = """```xml\n<Syntax : ..ban <user> [reason] >```"""
@@ -101,7 +108,8 @@ class Help(commands.Cog):
                       value="Can be used 1 time per 3 seconds, per user.",
                       inline=False)
         await ctx.send(embed=emb)
-
+    
+    # Help command for the forceban command
     @help.command()
     async def forceban(self, ctx):
         codec = """```xml\n<Syntax : ..forceban <user_id> [reason] >```"""
@@ -127,6 +135,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emc)
 
+    # Help command for the mute command
     @help.command()
     async def mute(self, ctx):
         coded = """```xml\n<Syntax : ..mute <user> <time> <d> [reason] >```"""
@@ -158,6 +167,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emd)
 
+    # Help command for the unban command
     @help.command()
     async def unban(self, ctx):
         codee = """```xml\n<Syntax : ..unban <user> [reason] >```"""
@@ -184,6 +194,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=eme)
 
+    # Help command for the unmute command
     @help.command()
     async def unmute(self, ctx):
         codef = """```xml\n<Syntax : ..unmute <user> [reason] >```"""
@@ -211,6 +222,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emf)
 
+    # Help command for the purge command
     @help.command()
     async def purge(self, ctx):
         codeg = """```xml\n<Syntax : ..purge <messages> >```"""
@@ -237,6 +249,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emg)
 
+    # Help command for the channel-lock command
     @help.command(aliases=["lockchan"])
     async def lockit(self, ctx):
         codeh = """```xml\n<Syntax : ..lockit [channel] >\nAliases: lockchan```"""
@@ -264,6 +277,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emh)
 
+    # Help command for the channel-unlock command
     @help.command(aliases=["ulockchan"])
     async def unlockit(self, ctx):
         codei = """```xml\n<Syntax : ..unlockit [channel] >\nAliases: ulockchan```"""
@@ -290,5 +304,8 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emi)
 
+#The help subcommands are limited to the moderation commands for now. There are a lot of other commands in the bot, but I was too lazy to make a help command for them. Maybe I'll do it later...
+
+# Adds the extention
 def setup(bot):
     bot.add_cog(Help(bot))

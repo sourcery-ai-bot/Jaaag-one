@@ -1,19 +1,23 @@
+# Imports
 import discord
 from discord.ext import commands
 import platform
 import json
 from datetime import datetime
 
+# Intializing the extension
 class utility(commands.Cog):
     """A cog containing some utility commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.last_msg = None
     
+    # Prints on the console when the extension is loaded
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        
+
+    # A command to get the invite link for the bot        
     @commands.command(aliases=['inv'])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -41,7 +45,8 @@ class utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="serverinfo")
+    # A command to view dome information about the server
+    @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.has_permissions(administrator=True)
@@ -77,6 +82,7 @@ class utility(commands.Cog):
         embed.set_footer(text=f"Created at: {time}")
         await ctx.send(embed=embed)
 
+    # A command to view some stats about the Bot
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def stats(self, ctx):
@@ -102,6 +108,7 @@ class utility(commands.Cog):
                         inline=False)
         await ctx.send(embed=embed)
 
+    # A command to set a custom prefix for commands in the server
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -118,10 +125,12 @@ class utility(commands.Cog):
 
         await ctx.send(f"The prefix has been changed to `{prefix}`")
 
+    # Listener for the command below
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         self.last_msg = message
-
+    
+    # A command to show the author and the content of the last deleted message in a text channel
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -141,6 +150,7 @@ class utility(commands.Cog):
                               timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
 
+    # A simple command for getting information about a user
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -192,6 +202,7 @@ class utility(commands.Cog):
         await ctx.send(embed=embed)
         return
 
+    # A simple command to get the profile picture of a user
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -202,7 +213,8 @@ class utility(commands.Cog):
                                timestamp=ctx.message.created_at)
         embed.set_image(url=member.avatar_url)      
         await ctx.send(embed=embed)
-
+    
+    # A command to get the bot's websocket latency
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def ping(self, ctx: commands.Context):
@@ -212,12 +224,14 @@ class utility(commands.Cog):
             content=
             f"Pong! :ping_pong:\nShard id 0: `{round(self.bot.latency * 1000)}`ms"
         )
-
+    
+    # A command to 'test' if the bot is responding
     @commands.command(name="test")
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def test(self, ctx: commands.Context):
         await ctx.send("I am alive!")
-    
+      
+# Adds the extention
 def setup(bot: commands.Bot):
     bot.add_cog(utility(bot))

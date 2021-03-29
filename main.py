@@ -21,14 +21,14 @@ bot = commands.Bot(command_prefix=get_prefix,
                    intents=discord.Intents.all(),
                    help_command=None)
 
-# extenstion list
+# extenstion list, the extentions are located in the "cogs" folder
 cogs = ["cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"]
 
-# loads the extensions apon starting the bot
+# loads the extensions apon startup
 for cog in cogs:
     bot.load_extension(cog)
 
-# Set's the bot's status
+# Set's the bot's status apon startup
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game('..help'))
