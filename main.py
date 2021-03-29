@@ -18,7 +18,7 @@ load_dotenv()
 intents = discord.Intents.all()
 
 # defining a few things
-bot = commands.Bot(command_prefix=get_prefix,
+bot = commands.AutoShardedBot(command_prefix=get_prefix,
                    owner_id=722168161713127435,
                    intents=discord.Intents.all(),
                    help_command=None)
