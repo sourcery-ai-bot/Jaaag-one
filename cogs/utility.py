@@ -5,19 +5,20 @@ import platform
 import json
 from datetime import datetime
 
+
 # Intializing the extension
 class utility(commands.Cog):
     """A cog containing some utility commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.last_msg = None
-    
+
     # Prints on the console when the extension is loaded
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    # A command to get the invite link for the bot        
+    # A command to get the invite link for the bot
     @commands.command(aliases=['inv'])
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -40,7 +41,8 @@ class utility(commands.Cog):
         )
         embed.add_field(
             name="link:",
-            value="Invite the bot using [this link](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)",
+            value=
+            "Invite the bot using [this link](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)",
             inline=False)
 
         await ctx.send(embed=embed)
@@ -129,7 +131,7 @@ class utility(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         self.last_msg = message
-    
+
     # A command to show the author and the content of the last deleted message in a text channel
     @commands.command()
     @commands.guild_only()
@@ -209,11 +211,11 @@ class utility(commands.Cog):
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def avatar(self, ctx, member: discord.Member):
         embed = discord.Embed(title=f"{member}'s Avatar!",
-                               colour=0x33fcff,
-                               timestamp=ctx.message.created_at)
-        embed.set_image(url=member.avatar_url)      
+                              colour=0x33fcff,
+                              timestamp=ctx.message.created_at)
+        embed.set_image(url=member.avatar_url)
         await ctx.send(embed=embed)
-    
+
     # A command to get the bot's websocket latency
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -224,30 +226,30 @@ class utility(commands.Cog):
             content=
             f"Pong! :ping_pong:\nShard id 0: `{round(self.bot.latency * 1000)}`ms"
         )
-    
+
     # A command to 'test' if the bot is responding
     @commands.command(name="test")
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def test(self, ctx: commands.Context):
         await ctx.send("I am alive!")
-      
+
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def source(self, ctx):
-       embed = discord.Embed(colour=0x33fcff,
-                             timestamp=ctx.message.created_at)
-       embed.set_author(
-                name=f"{self.bot.user.name} Help Menu",
-                icon_url=
-                f"{self.bot.user.avatar_url}"
-       embed.add_field(
+        embed = discord.Embed(colour=0x33fcff,
+                              timestamp=ctx.message.created_at)
+        embed.set_author(name=f"{self.bot.user.name} Help Menu",
+                         icon_url=f"{self.bot.user.avatar_url}")
+        embed.set_thumbnail(url='https://hackernoon.com/images/bFFEe4dIUoXgbouiLfgW9PI9b8q1-332431x7.gif')
+        embed.add_field(
             name="Source Code",
             value=
             "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!",
             inline=False)
-       await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
+
 
 # Adds the extention
 def setup(bot: commands.Bot):

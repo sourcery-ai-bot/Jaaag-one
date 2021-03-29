@@ -1,4 +1,14 @@
 import json
+import discord
+from discord.ext.buttons import Paginator
+
+
+class Pag(Paginator):
+    async def teardown(self):
+        try:
+            await self.page.clear_reactions()
+        except discord.HTTPException:
+            pass
 
 # function for getting the stored prefix of a server from the json file
 def get_prefix(bot, message):

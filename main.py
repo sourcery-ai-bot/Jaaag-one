@@ -7,7 +7,7 @@ from os import getenv
 from Keeping_alive import keep_alive
 import json
 from utils.util import get_prefix
-from datetime import datetime, timedelta
+from datetime import datetime
 
 #loads the secret file containg the bot's password
 load_dotenv()
@@ -21,7 +21,7 @@ bot = commands.Bot(command_prefix=get_prefix,
                    help_command=None)
 
 # extenstion list, the extentions are located in the "cogs" folder
-cogs = ["cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"]
+cogs = ["cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors", "cogs.helptest"]
 
 # loads the extensions apon startup
 for cog in cogs:
