@@ -246,7 +246,7 @@ class utility(commands.Cog):
         embed.add_field(
             name="Source Code",
             value=
-            "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!",
+            "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!\n\nDeveloped and hosted by GhosT#4615",
             inline=False)
         await ctx.send(embed=embed)
 

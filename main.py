@@ -8,6 +8,9 @@ from Keeping_alive import keep_alive
 import json
 from utils.util import get_prefix
 from datetime import datetime
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 #loads the secret file containg the bot's password
 load_dotenv()
