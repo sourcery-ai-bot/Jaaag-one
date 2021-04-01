@@ -1,7 +1,29 @@
 # Imports
-import discord
-from discord.ext import commands
 import asyncio
+import discord
+from discord import NotFound, Object
+from discord.utils import find
+from discord.ext import commands
+from discord.ext.commands import Converter, Greedy
+from discord.ext.commands import BadArgument
+from typing import Optional
+
+
+class BannedUser(Converter):
+	async def convert(self, ctx, arg):
+		if ctx.guild.me.guild_permissions.ban_members:
+			if arg.isdigit():
+				try:
+					return (await ctx.guild.fetch_ban(Object(id=int(arg)))).user
+				except NotFound:
+					raise BadArgument
+
+		banned = [e.user for e in await ctx.guild.bans()]
+		if banned:
+			if (user := find(lambda u: str(u) == arg, banned)) is not None:
+				return user
+			else:
+				raise BadArgument
 
 
 # Intializing the extension
@@ -14,7 +36,7 @@ class Mod(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        
+
     # A command to kick a user from a server, can only be used by server moderators
     @commands.command()
     @commands.guild_only()
@@ -23,7 +45,7 @@ class Mod(commands.Cog):
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member, *, reason=None):
         await ctx.guild.kick(user, reason=reason)
-        await ctx.send(f'Done. {user.name} was kicked.', delete_after=3)
+        await ctx.send(f'Done. **{user.name}** was kicked.', delete_after=3)
     
     # A command to ban a user from a server, can only be used by server moderators
     @commands.command()
@@ -33,7 +55,7 @@ class Mod(commands.Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
         await ctx.guild.ban(user, reason=reason)
-        await ctx.send(f'Done. {user.name} was banned.', delete_after=3)
+        await ctx.send(f'Done. **{user.name}** was banned.', delete_after=3)
 
     # A command to ban a user that isn't in the server, can only be used by server moderators and only accepts user id's
     @commands.command()
@@ -43,29 +65,24 @@ class Mod(commands.Cog):
     @commands.bot_has_permissions(ban_members=True)
     async def forceban(self, ctx, user_id: int, *, reason=None):
         await ctx.guild.ban(discord.Object(id=user_id), reason=reason)
-        await ctx.send(f'Done. {self.bot.get_user(user_id)} was forcebanned.',
+        await ctx.send(f'Done. **{self.bot.get_user(user_id)}** was forcebanned.',
                        delete_after=3)
 
     # A command to unban a user from a server, can only be used by server moderators
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
-    async def unban(self, ctx, *, member):
-        """ Unban a user from the guild"""
-        banned_users = await ctx.guild.bans()
-        member_name, member_discriminator = member.split('#')
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, targets: Greedy[BannedUser], *, reason: Optional[str] = "No reason provided."):
+      if not len(targets):
+        await ctx.send("One or more required arguments are missing.")
 
-        for ban_entry in banned_users:
-            user = ban_entry.user
+      else:
+        for target in targets:
+          await ctx.guild.unban(target, reason=reason)
 
-        if (user.name, user.discriminator) == (member_name,
-                                               member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.send(f"{user} has been unbanned sucessfully",
-                           delete_after=3)
-            return
+        await ctx.send(f"**{target}** has been unbanned sucessfully", delete_after=3)
 
     # A command to mute a user in the server, can only be used by server moderators, the user will be automatically unmuted after the specified mute duration ends
     @commands.command()
@@ -158,8 +175,8 @@ class Mod(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True)
     async def purge(self, ctx, messages: int):
-        if messages > 99:
-            messages = 99
+        if messages > 1000:
+            messages = 1000
         await ctx.channel.purge(limit=messages + 1)
         await ctx.send(f'Done. {messages} messages were purged.',
                        delete_after=3)
@@ -177,7 +194,7 @@ class Mod(commands.Cog):
     # The opposite of the above command
     @commands.command(aliases=['ulockchan'])
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.cooldown(1, 8, commands.BucketType.user)
     @commands.has_permissions(administrator=True)
     @commands.bot_has_permissions(manage_channels=True)
     async def unlockit(self, ctx):

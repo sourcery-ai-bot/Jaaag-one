@@ -26,8 +26,7 @@ bot = commands.AutoShardedBot(command_prefix=get_prefix,
 
 # extenstion list, the extentions are located in the "cogs" folder
 cogs = [
-    "cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors",
-    "cogs.helptest"
+    "cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"
 ]
 
 # loads the extensions apon startup

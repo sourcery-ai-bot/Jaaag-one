@@ -52,6 +52,11 @@ class Help(commands.Cog):
                 value=
                 "`setprefix  :` Change the server's prefix for the bot\n`serverinfo :` Get some info about the guild\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
                 inline=False)
+            em.add_field(
+                name="__**Useful links:**__",
+                value="[Bot invite](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot) • [Support server invite](https://discord.gg/DCJwTY8kVP)",
+                inline=False
+            )
             await ctx.send(embed=em)
     
     # Help command for the kick command
@@ -67,7 +72,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        ema.set_footer(text="Hosted by GhOsT#4615")
+        ema.set_footer(text="Developed by GhOsT#4615")
         ema.add_field(
             name="**Kick a user.**",
             value=
@@ -95,7 +100,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emb.set_footer(text="Hosted by GhOsT#4615")
+        emb.set_footer(text="Developed by GhOsT#4615")
         emb.add_field(
             name="**Ban a user.**",
             value=
@@ -122,7 +127,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emc.set_footer(text="Hosted by GhOsT#4615")
+        emc.set_footer(text="Developed by GhOsT#4615")
         emc.add_field(
             name="**Ban a user.**",
             value="Bans a user not in the server. Only accepts user ID's.",
@@ -138,7 +143,7 @@ class Help(commands.Cog):
     # Help command for the mute command
     @help.command()
     async def mute(self, ctx):
-        coded = """```xml\n<Syntax : ..mute <user> <time> <d> [reason] >```"""
+        coded = """```xml\n<Syntax : ..mute <user> <time> [reason] >```"""
 
         emd = discord.Embed(description=f"{coded}",
                             color=0x33fcff,
@@ -148,7 +153,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emd.set_footer(text="Hosted by GhOsT#4615")
+        emd.set_footer(text="Developed by GhOsT#4615")
         emd.add_field(
             name="**Mute a user.**",
             value=
@@ -180,7 +185,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        eme.set_footer(text="Hosted by GhOsT#4615")
+        eme.set_footer(text="Developed by GhOsT#4615")
         eme.add_field(
             name="**Unban a user.**",
             value=
@@ -207,7 +212,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emf.set_footer(text="Hosted by GhOsT#4615")
+        emf.set_footer(text="Developed by GhOsT#4615")
         emf.add_field(
             name="**Unmute a user.**",
             value=
@@ -235,7 +240,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emg.set_footer(text="Hosted by GhOsT#4615")
+        emg.set_footer(text="Developed by GhOsT#4615")
         emg.add_field(
             name="**Clear messages.**",
             value="Deletes up a specified amount of messages in\na channel",
@@ -245,7 +250,7 @@ class Help(commands.Cog):
             value="**Bot: `Manage Messages`**\n**User: `Manage Messages`**",
             inline=False)
         emg.add_field(name="**Cooldown:**",
-                      value="Can be used 1 time per 3 seconds, per user.",
+                      value="Can be used 1 time per 8 seconds, per user.",
                       inline=False)
         await ctx.send(embed=emg)
 
@@ -262,7 +267,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emh.set_footer(text="Hosted by GhOsT#4615")
+        emh.set_footer(text="Developed by GhOsT#4615")
         emh.add_field(
             name="**Lock a channel.**",
             value=
@@ -290,7 +295,7 @@ class Help(commands.Cog):
             icon_url=
             f'{self.bot.user.avatar_url}'
         )
-        emi.set_footer(text="Hosted by GhOsT#4615")
+        emi.set_footer(text="Developed by GhOsT#4615")
         emi.add_field(
             name="**Unlock a channel.**",
             value="Enables the ability of users to send messages\nin a channel",
