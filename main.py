@@ -1,79 +1,107 @@
-# Importing some libraries
-import discord
-from discord.ext import commands
-from discord import Intents
-from dotenv import load_dotenv
-from os import getenv
-from Keeping_alive import keep_alive
+import os
 import json
-from utils.util import get_prefix
-from datetime import datetime
 import logging
+import datetime
 
-# Setting up logging
-logging.basicConfig(level=logging.INFO)
+import discord
+from pathlib import Path
+import motor.motor_asyncio
+from discord.ext import commands
+from os import getenv
+from dotenv import load_dotenv
+from datetime import datetime
 
-#loads the secret file containg the bot's password
+from utils.mongo import Document
+from Keeping_alive import keep_alive
+
 load_dotenv()
 
-intents = discord.Intents.all()
-
-# defining a few things
-bot = commands.Bot(command_prefix=get_prefix,
-                              owner_id=722168161713127435,
-                              intents=discord.Intents.all(),
-                              help_command=None)
-
-# extenstion list, the extentions are located in the "cogs" folder
-cogs = [
-    "cogs.mod", "cogs.fun", "cogs.utility", "cogs.help", "cogs.errors"
-]
-
-# loads the extensions apon startup
-for cog in cogs:
-    bot.load_extension(cog)
+cwd = Path(__file__).parents[0]
+cwd = str(cwd)
+print(f"{cwd}\n-----")
 
 
-# Set's the bot's status apon startup
+async def get_prefix(bot, message):
+    
+    if not message.guild:
+        return commands.when_mentioned_or("..")(bot, message)
+
+    try:
+        data = await bot.config.find(message.guild.id)
+
+        if not data or "prefix" not in data:
+            return commands.when_mentioned_or("..")(bot, message)
+        return commands.when_mentioned_or(data["prefix"])(bot, message)
+    except:
+        return commands.when_mentioned_or("..")(bot, message)
+
+
+bot = commands.Bot(
+    command_prefix=get_prefix, case_insensitive=True, owner_id=722168161713127435,
+    help_command=None
+)
+bot.config_token = os.getenv("TOKEN")
+bot.connection_url = os.getenv("MONGO")
+logging.basicConfig(level=logging.INFO)
+
+bot.blacklisted_users = []
+bot.cwd = cwd
+
 @bot.event
 async def on_ready():
+    print(
+        f"-----\nLogged in as: {bot.user.name}\n-----\nUser id: {bot.user.id}\n-----\nMy current prefix is: ..\n-----"
+    )
     await bot.change_presence(
-      activity=discord.Game('..help'),
+        activity=discord.Game(
+            name="..help"
+        ),
       status=discord.Status.dnd
-      )
+    ) 
+
+    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
+    bot.db = bot.mongo["jaaagdocs"]
+    bot.config = Document(bot.db, "config")
+    print("Initializing Database\n-----")
 
 
-# When the bot joins a server, it adds the server to the database, along with it's prefix
 @bot.event
-async def on_guild_join(guild):
+async def on_message(message):
+    if message.author.bot:
+        return
 
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
+    if message.author.id in bot.blacklisted_users:
+        return
 
-    prefixes[str(guild.id)] = ".."
+    if message.content.startswith(f"<@!{bot.user.id}>") and \
+        len(message.content) == len(f"<@!{bot.user.id}>"
+    ):
+        data = await bot.config.get_by_id(message.guild.id)
+        if not data or "prefix" not in data:
+            prefix = ".."
+        else:
+            prefix = data["prefix"]
+        await message.channel.send(f"My prefix here is `{prefix}`")
 
-    with open("prefixes.json", "w") as f:
-        json.dump(prefixes, f)
+    await bot.process_commands(message)
 
-
-# Command group for performing bot admin actions
 @bot.group()
 @commands.is_owner()
 async def sudo(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send(
-            "Use `..sudo <command>` to perform your bot admin actions.")
+            "Use `..sudo <command>` to perform your bot admin actions."
+            )
 
 
-# load an extension
 @sudo.command()
 @commands.is_owner()
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
-    await ctx.send(f"Sucessfully loaded the `{extension}` Cog.")
+    await ctx.send(f"Sucessfully loaded the `{extension}` Cog."
+    )
 
 
-# Unload an extension
 @sudo.command()
 @commands.is_owner()
 async def unload(ctx, extension):
@@ -83,16 +111,15 @@ async def unload(ctx, extension):
     )
 
 
-# Reload an extension
 @sudo.command()
 @commands.is_owner()
 async def reload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     bot.load_extension(f'cogs.{extension}')
-    await ctx.send(f"Done. Reloaded The `{extension}` Cog.")
+    await ctx.send(f"Done. Reloaded The `{extension}` Cog."
+    )
 
 
-# Shuts the bot down by logging out
 @sudo.command()
 @commands.is_owner()
 async def shutdown(ctx):
@@ -100,11 +127,9 @@ async def shutdown(ctx):
     await ctx.bot.logout()
 
 
-# local variable for the command below
 bot.launch_time = datetime.utcnow()
 
 
-# Gives how long the bot has been running
 @bot.command()
 @commands.guild_only()
 @commands.cooldown(1, 10, commands.BucketType.user)
@@ -117,8 +142,11 @@ async def uptime(ctx):
         f"The bot has been up for`{days}`days , `{hours}`hours and `{minutes}`minutes."
     )
 
-# Runs the flask file
 keep_alive()
 
-# Logs the bot into discord
-bot.run(getenv("TOKEN"))
+if __name__ == "__main__":
+    for file in os.listdir(cwd + "/cogs"):
+        if file.endswith(".py") and not file.startswith("_"):
+            bot.load_extension(f"cogs.{file[:-3]}")
+
+    bot.run(bot.config_token)

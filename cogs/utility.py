@@ -83,47 +83,49 @@ class utility(commands.Cog):
         await ctx.send(embed=embed)
 
     # A command to view some stats about the Bot
-    @commands.command()
-    @commands.cooldown(1, 15, commands.BucketType.user)
-    async def stats(self, ctx):
-        pythonv = platform.python_version()
-        dpy = discord.__version__
-        serverCount = len(self.bot.guilds)
-        memberCount = len(set(self.bot.get_all_members()))
-        embed = discord.Embed(title="Jaaag Help Menu",
-                              description="**Bot stats**",
-                              color=discord.Color.blue(),
-                              timestamp=datetime.utcnow())
-        embed.add_field(name="**Server count:**",
-                        value=f"`{serverCount}` guilds",
-                        inline=False)
-        embed.add_field(name="**Member count:**",
-                        value=f"`{memberCount}` users",
-                        inline=False)
-        embed.add_field(name="**Python version:**",
-                        value=f"`{pythonv}`",
-                        inline=False)
-        embed.add_field(name="**Discord.py version:**",
-                        value=f"`{dpy}`",
-                        inline=False)
-        await ctx.send(embed=embed)
+    #@commands.command()
+    #@commands.cooldown(1, 15, commands.BucketType.user)
+    #async def stats(self, ctx):
+        #pythonv = platform.python_version()
+        #dpy = discord.__version__
+        #serverCount = len(self.bot.guilds)
+        #memberCount = len(set(self.bot.get_all_members()))
+        #embed = discord.Embed(title="Jaaag Help Menu",
+                              #description="**Bot stats**",
+                              #color=discord.Color.blue(),
+                              #timestamp=datetime.utcnow())
+        #embed.add_field(name="**Server count:**",
+                        #value=f"`{serverCount}` guilds",
+                        #inline=False)
+        #embed.add_field(name="**Member count:**",
+                        #value=f"`{memberCount}` users",
+                        #inline=False)
+        #embed.add_field(name="**Python version:**",
+                        #value=f"`{pythonv}`",
+                        #inline=False)
+        #embed.add_field(name="**Discord.py version:**",
+                        #value=f"`{dpy}`",
+                        #inline=False)
+        #await ctx.send(embed=embed)
+    #this command has been temporarily commented out because it's showing wrong stats. This will be fixed later.
 
-    # A command to set a custom prefix for commands in the server
     @commands.command()
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.user)
-    @commands.has_permissions(administrator=True)
-    async def setprefix(self, ctx, prefix):
+    @commands.has_guild_permissions(manage_guild=True)
+    async def setprefix(self, ctx, *, prefix):
+        await self.bot.config.upsert({"_id": ctx.guild.id, "prefix": prefix})
+        await ctx.send(
+            f"The guild prefix has been set to `{prefix}`. Use `{prefix}setprefix [prefix]` to change it again!"
+        )
 
-        with open("prefixes.json", "r") as f:
-            prefixes = json.load(f)
-
-        prefixes[str(ctx.guild.id)] = prefix
-
-        with open("prefixes.json", "w") as f:
-            json.dump(prefixes, f)
-
-        await ctx.send(f"The prefix has been changed to `{prefix}`")
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_guild_permissions(manage_guild=True)
+    async def resetprefix(self, ctx):
+        await self.bot.config.unset({"_id": ctx.guild.id, "prefix": 1})
+        await ctx.send(
+          "The prefix for this guild has been reset to `..`"
+        )
 
     # Listener for the command below
     @commands.Cog.listener()
@@ -216,9 +218,7 @@ class utility(commands.Cog):
         message = await ctx.send("Testing Ping...")
 
         await message.edit(
-            content=
-            f"Pong! :ping_pong:\n`{round(self.bot.latency * 1000)}`ms"
-        )
+            content=f"Pong! :ping_pong:\n`{round(self.bot.latency * 1000)}`ms")
 
     # A command to 'test' if the bot is responding
     @commands.command(name="test")
@@ -235,28 +235,31 @@ class utility(commands.Cog):
                               timestamp=ctx.message.created_at)
         embed.set_author(name=f"{self.bot.user.name} Help Menu",
                          icon_url=f"{self.bot.user.avatar_url}")
-        embed.set_thumbnail(url='https://user-images.githubusercontent.com/41782385/59523230-55488280-8f03-11e9-9abe-e8e0f3d9a245.gif')
+        embed.set_thumbnail(
+            url=
+            'https://user-images.githubusercontent.com/41782385/59523230-55488280-8f03-11e9-9abe-e8e0f3d9a245.gif'
+        )
         embed.add_field(
             name="Source Code",
             value=
             "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!\n\nDeveloped and hosted by GhosT#4615",
             inline=False)
         await ctx.send(embed=embed)
-    
+
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def vote(self, ctx):
-      embed = discord.Embed(color=0x33fcff,
-                              timestamp=ctx.message.created_at)
-      embed.set_thumbnail(url=f"{self.bot.user.avatar_url}")
-      embed.set_footer(text="Doitdoitdoitdoit!")
-      embed.add_field(
+        embed = discord.Embed(color=0x33fcff, timestamp=ctx.message.created_at)
+        embed.set_thumbnail(url=f"{self.bot.user.avatar_url}")
+        embed.set_footer(text="Doitdoitdoitdoit!")
+        embed.add_field(
             name="Vote for us!",
-            value="Bot list links:\n[Top.gg](https://top.gg/bot/816034868899086386/vote)",
-            inline=False
-      )
-      await ctx.send(embed=embed)
+            value=
+            "Bot list links:\n[Top.gg](https://top.gg/bot/816034868899086386/vote)",
+            inline=False)
+        await ctx.send(embed=embed)
+
 
 # Adds the extention
 def setup(bot: commands.Bot):
-    bot.add_cog(utility(bot)) 
+    bot.add_cog(utility(bot))
