@@ -15,6 +15,8 @@ If you already are a discord user, then please consider inviting the instance of
 * [python-dotenv](https://pypi.org/project/python-dotenv/)
 * [Flask](https://pypi.org/project/Flask/)
 * [Pillow](https://pypi.org/project/Pillow/)
+* [dnspython](https://pypi.org/project/dnspython/)
+* [motor](https://pypi.org/project/motor/)
 
 # Aknowledgements-
 * [Rapptz](https://github.com/Rapptz), the owner of discord.py
