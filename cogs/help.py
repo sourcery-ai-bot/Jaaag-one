@@ -50,7 +50,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Admin Utils:**__",
                 value=
-                "`setprefix  :` Change the server's prefix for the bot\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
+                "`setprefix  :` Change the server's prefix for the bot\n`resetprefix:` Reset the server prefix for the bot\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
                 inline=False)
             em.add_field(
                 name="__**Useful links:**__",
