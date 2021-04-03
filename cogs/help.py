@@ -30,7 +30,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Images/gifs:**__",
                 value=
-                "`kekw       :` Send a quick kekw gif\n`omgwow     :` Send a quick omg gif\n`oof        :` Send a quick oof gif\n`bonk       :` Send a quick bonk gif\n`wanted     :` try this command to find out more",
+                "`wanted     :` try this command to find out more",
                 inline=False)
             em.add_field(
                 name="__**Fun:**__",
@@ -45,12 +45,12 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Utility:**__",
                 value=
-                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar",
+                "`test       :` Test if the bot is responding\n`ping       :` Get the bot's gateway latency\n`help       :` Shows this message\n`invite     :` Gives the bot's invite link\n`stats      :` Get some statistics about the bot\n`whois      :` Get some info about a user\n`avatar     :` See a user's avatar\n`serverinfo :` Get some info about the guild\n`vote       :` Vote for the bot",
                 inline=False)
             em.add_field(
                 name="__**Admin Utils:**__",
                 value=
-                "`setprefix  :` Change the server's prefix for the bot\n`serverinfo :` Get some info about the guild\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
+                "`setprefix  :` Change the server's prefix for the bot\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel",
                 inline=False)
             em.add_field(
                 name="__**Useful links:**__",

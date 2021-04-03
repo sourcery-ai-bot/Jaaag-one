@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
+from utils.stuff import insults, botinsults
 from PIL import Image
 from io import BytesIO
 
@@ -13,12 +14,12 @@ class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    # Prints on the console when the extension is loaded 
+    # Prints on the console when the extension is loaded
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    # A fun 8ball command  
+    # A fun 8ball command
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -67,7 +68,7 @@ class Fun(commands.Cog):
     async def hello(self, ctx):
         await ctx.reply(f'sup {ctx.author.mention}!')
 
-    # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster. 
+    # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster.
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -88,7 +89,7 @@ class Fun(commands.Cog):
         wanted.save("profile.jpg")
 
         await ctx.send(file=discord.File("profile.jpg"))
-    
+
     # These commands are to be ignored, My friends made me add them and they have no special function other than sending a gif and a rickroll link
 
     @commands.command()
@@ -124,6 +125,21 @@ class Fun(commands.Cog):
         await ctx.send(
             'https://tenor.com/view/walter-bonk-walter-bonk-nelson-dog-gif-15721111def'
         )
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def insult(self, ctx, *, member: discord.Member = None):
+
+        if member == self.bot.user:
+            await ctx.send(f"{ctx.author.mention} {random.choice(botinsults)}")
+
+        elif member is None:
+            await ctx.send(f"{ctx.author.mention} {random.choice(insults)}")
+
+        else:
+            await ctx.send(f'{member.mention} {random.choice(insults)}')
+
 
 # Adds the extention
 def setup(bot: commands.Bot):

@@ -19,7 +19,7 @@ load_dotenv()
 intents = discord.Intents.all()
 
 # defining a few things
-bot = commands.AutoShardedBot(command_prefix=get_prefix,
+bot = commands.Bot(command_prefix=get_prefix,
                               owner_id=722168161713127435,
                               intents=discord.Intents.all(),
                               help_command=None)
@@ -116,7 +116,6 @@ async def uptime(ctx):
     await ctx.send(
         f"The bot has been up for`{days}`days , `{hours}`hours and `{minutes}`minutes."
     )
-
 
 # Runs the flask file
 keep_alive()

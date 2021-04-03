@@ -19,8 +19,7 @@ class utility(commands.Cog):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     # A command to get the invite link for the bot
-    @commands.command(aliases=['inv'])
-    @commands.guild_only()
+    @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def invite(self, ctx):
         embed = discord.Embed(
@@ -51,7 +50,6 @@ class utility(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
-    @commands.has_permissions(administrator=True)
     async def serverinfo(self, ctx):
         server = ctx.message.guild
         roles = [x.name for x in server.roles]
@@ -136,7 +134,7 @@ class utility(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def snipe(self, ctx):
         """A command to snipe delete messages."""
         if not self.last_msg:
@@ -155,7 +153,6 @@ class utility(commands.Cog):
     # A simple command for getting information about a user
     @commands.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def whois(self, ctx, member: discord.Member = None):
 
@@ -170,15 +167,12 @@ class utility(commands.Cog):
                               colour=0x33fcff,
                               timestamp=ctx.message.created_at)
         embed.set_thumbnail(url=member.avatar_url)
-        embed.set_footer(text=f"Requested by: {ctx.author}",
+        embed.set_footer(text=f"Requested by {ctx.author}",
                          icon_url=ctx.author.avatar_url)
         embed.set_author(name="User Info: ")
         embed.add_field(name="ID:", value=member.id, inline=False)
         embed.add_field(name="Server Nickname:",
                         value=member.display_name,
-                        inline=False)
-        embed.add_field(name="Discriminator:",
-                        value=member.discriminator,
                         inline=False)
         embed.add_field(name="Current Status:",
                         value=str(member.status).title(),
@@ -191,14 +185,14 @@ class utility(commands.Cog):
             inline=False)
         embed.add_field(
             name="Created At:",
-            value=member.created_at.strftime("%a, %d, %B, %Y, %I, %M, %p UTC"),
+            value=member.created_at.strftime("%a, %d %B %Y, %I:%M, %p UTC"),
             inline=False)
         embed.add_field(
             name="Joined At:",
-            value=member.joined_at.strftime("%a, %d, %B, %Y, %I, %M, %p UTC"),
+            value=member.joined_at.strftime("%a, %d %B %Y, %I:%M %p UTC"),
             inline=False)
         embed.add_field(name=f"Roles [{len(roles)}]",
-                        value=" **|** ".join([role.mention for role in roles]),
+                        value=" **,** ".join([role.mention for role in roles]),
                         inline=False)
         embed.add_field(name="Top Role:", value=member.top_role, inline=False)
         await ctx.send(embed=embed)
@@ -207,7 +201,6 @@ class utility(commands.Cog):
     # A simple command to get the profile picture of a user
     @commands.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def avatar(self, ctx, member: discord.Member):
         embed = discord.Embed(title=f"{member}'s Avatar!",
@@ -224,7 +217,7 @@ class utility(commands.Cog):
 
         await message.edit(
             content=
-            f"Pong! :ping_pong:\nShard id 0: `{round(self.bot.latency * 1000)}`ms"
+            f"Pong! :ping_pong:\n`{round(self.bot.latency * 1000)}`ms"
         )
 
     # A command to 'test' if the bot is responding
@@ -249,8 +242,21 @@ class utility(commands.Cog):
             "[Click here](https://github.com/Arman0334/Jaaag-one) to view my source code!\n\nDeveloped and hosted by GhosT#4615",
             inline=False)
         await ctx.send(embed=embed)
-
+    
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def vote(self, ctx):
+      embed = discord.Embed(color=0x33fcff,
+                              timestamp=ctx.message.created_at)
+      embed.set_thumbnail(url=f"{self.bot.user.avatar_url}")
+      embed.set_footer(text="Doitdoitdoitdoit!")
+      embed.add_field(
+            name="Vote for us!",
+            value="Bot list links:\n[Top.gg](https://top.gg/bot/816034868899086386/vote)",
+            inline=False
+      )
+      await ctx.send(embed=embed)
 
 # Adds the extention
 def setup(bot: commands.Bot):
-    bot.add_cog(utility(bot))
+    bot.add_cog(utility(bot)) 

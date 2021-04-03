@@ -171,12 +171,12 @@ class Mod(commands.Cog):
     # A command to delete messages in a text channel, can only be used by server administrators
     @commands.command()
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.cooldown(1, 8, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True)
     async def purge(self, ctx, messages: int):
-        if messages > 1000:
-            messages = 1000
+        if messages > 99:
+            messages = 99
         await ctx.channel.purge(limit=messages + 1)
         await ctx.send(f'Done. {messages} messages were purged.',
                        delete_after=3)
