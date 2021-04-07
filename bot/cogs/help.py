@@ -45,7 +45,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Admin Utils:**__",
                 value=
-                "`setprefix  :` Change the server's prefix for the bot\n`resetprefix:` Reset the server prefix for the bot\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel\n`modlogset  :` Set the modlo channel",
+                "`setprefix  :` Change the server's prefix for the bot\n`resetprefix:` Reset the server prefix for the bot\n`snipe      :` See the last deleted message\n`lockit     :` Lock a channel\n`unlockit   :` Unlock a channel\n`modlogset  :` Set the modlog channel",
                 inline=False)
             em.add_field(
                 name="__**Useful links:**__",
@@ -129,7 +129,7 @@ class Help(commands.Cog):
     # Help command for the mute command
     @help.command()
     async def mute(self, ctx):
-        coded = f"""```xml\n<Syntax : {ctx.prefix}mute <user> <time> [reason] >```"""
+        coded = f"""```xml\n<Syntax : {ctx.prefix}mute <user> <time> [reason] >\nAlias: {ctx.prefix}tempmute```"""
 
         emd = discord.Embed(description=f"{coded}",
                             color=0x33fcff,

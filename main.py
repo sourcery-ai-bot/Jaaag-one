@@ -63,6 +63,7 @@ async def on_ready():
     bot.db = bot.mongo["jaaagdocs"]
     bot.config = Document(bot.db, "config")
     bot.modlog = Document(bot.db, "modlogchannel")
+    bot.muterole = Document(bot.db, "muterole")
     print("Initializing Database\n-----")
 
 

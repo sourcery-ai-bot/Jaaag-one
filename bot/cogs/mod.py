@@ -56,6 +56,18 @@ class Mod(commands.Cog):
       await self.bot.modlog.upsert({"_id": ctx.guild.id, "modlog": channel.id})
       await ctx.send(f"Modlog events will now be posted to {channel.mention}.")
 
+    @commands.command(aliases=["mrs", "muteset"])
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    @commands.bot_has_permissions(manage_roles=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def muteroleset(self, ctx, role: discord.Role=None):
+      if role is None:
+        await ctx.send("You need do mention a role to be set as the muterole.")
+      else:
+        await self.bot.muterole.upsert({"_id": ctx.guild.id, "muterole": role.id})
+        await ctx.send(f"The muterole has been set to {role.mention}")
+
     # A command to kick a user from a server, can only be used by server moderators
     @commands.command()
     @commands.guild_only()
@@ -182,8 +194,8 @@ class Mod(commands.Cog):
     async def unban(self, ctx, targets: Greedy[BannedUser], *, reason: Optional[str] = "No reason provided."):
       data = await self.bot.modlog.get_by_id(ctx.guild.id)
       if not data or "modlog" not in data:
-          await ctx.send(
-            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+        await ctx.send(
+          f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
           )
       else:
         modlogchannel = data["modlog"]
