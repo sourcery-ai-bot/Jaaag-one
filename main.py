@@ -91,7 +91,7 @@ async def on_message(message):
 @commands.is_owner()
 async def load(ctx, extension):
     bot.load_extension(
-      f'cogs.{extension}'
+      f'bot.cogs.{extension}'
       )
     await ctx.send(
       f"`{extension}` Cog has been loaded."
@@ -102,7 +102,7 @@ async def load(ctx, extension):
 @commands.is_owner()
 async def unload(ctx, extension):
     bot.unload_extension(
-      f'cogs.{extension}'
+      f'bot.cogs.{extension}'
       )
     await ctx.send(
         f"`{extension}` Cog has been unloaded."
@@ -113,10 +113,10 @@ async def unload(ctx, extension):
 @commands.is_owner()
 async def reload(ctx, extension):
     bot.unload_extension(
-      f'cogs.{extension}'
+      f'bot.cogs.{extension}'
       )
     bot.load_extension(
-      f'cogs.{extension}'
+      f'bot.cogs.{extension}'
       )
     await ctx.send(
       f"`{extension}` Cog has been reloaded."

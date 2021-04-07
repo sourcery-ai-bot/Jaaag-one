@@ -7,7 +7,6 @@ from bot.utils.stuff import insults, botinsults
 from PIL import Image
 from io import BytesIO
 
-
 # Intializing the extension
 class Fun(commands.Cog):
     """A cog containing fun commands."""
