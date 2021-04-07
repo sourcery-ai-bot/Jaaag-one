@@ -94,7 +94,7 @@ async def load(ctx, extension):
       f'cogs.{extension}'
       )
     await ctx.send(
-      f"`{extension}` Cog ha been loaded."
+      f"`{extension}` Cog has been loaded."
     )
 
 

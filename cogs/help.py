@@ -246,7 +246,7 @@ class Help(commands.Cog):
             inline=False)
         emh.add_field(
             name="**Permissions**",
-            value="**Bot: `Manage Channels`**\n**User: `Manage Channels`**",
+            value="**Bot: `Manage Channels`**\n**User: `Manage Messages`**",
             inline=False)
         emh.add_field(name="**Cooldown:**",
                       value="Can be used 1 time per 3 seconds, per user.",
@@ -271,7 +271,7 @@ class Help(commands.Cog):
             inline=False)
         emi.add_field(
             name="**Permissions**",
-            value="**Bot: `Manage Channels`**\n**User: `Manage Channels`**",
+            value="**Bot: `Manage Channels`**\n**User: `Manage Messages`**",
             inline=False)
         emi.add_field(name="**Cooldown:**",
                       value="Can be used 1 time per 3 seconds, per user.",
