@@ -75,6 +75,7 @@ class Fun(commands.Cog):
 
     # A simple command that replies back to the user
     @commands.command()
+    @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hello(self, ctx):
         await ctx.reply(f'sup {ctx.author.mention}!')
@@ -82,6 +83,7 @@ class Fun(commands.Cog):
     # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster.
 
     @commands.command()
+    @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wanted(self, ctx, user: discord.Member = None):
         if user == None:
@@ -122,6 +124,7 @@ class Fun(commands.Cog):
               )
     
     @commands.command()
+    @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def slots(self, ctx):
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
