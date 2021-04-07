@@ -11,8 +11,8 @@ from os import getenv
 from dotenv import load_dotenv
 from datetime import datetime
 
-from utils.mongo import Document
-from Keeping_alive import keep_alive
+from bot.utils.mongo import Document
+from bot.Keeping_alive import keep_alive
 
 load_dotenv()
 
@@ -134,9 +134,9 @@ async def shutdown(ctx):
 keep_alive()
 
 if __name__ == "__main__":
-    for file in os.listdir(cwd + "/cogs"):
+    for file in os.listdir(cwd + "/bot/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
-            bot.load_extension(f"cogs.{file[:-3]}")
+            bot.load_extension(f"bot.cogs.{file[:-3]}")
 
     bot.run(bot.config_token)
     

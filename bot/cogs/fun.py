@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
-from utils.stuff import insults, botinsults
+from bot.utils.stuff import insults, botinsults
 from PIL import Image
 from io import BytesIO
 
