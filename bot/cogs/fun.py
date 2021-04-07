@@ -6,6 +6,7 @@ import aiohttp
 from bot.utils.stuff import insults, botinsults
 from PIL import Image
 from io import BytesIO
+from datetime import datetime
 
 # Intializing the extension
 class Fun(commands.Cog):
@@ -119,6 +120,52 @@ class Fun(commands.Cog):
             await ctx.send(
               f'{member.mention} {random.choice(insults)}'
               )
+    
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def slots(self, ctx):
+        emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
+        a = random.choice(emojis)
+        b = random.choice(emojis)
+        c = random.choice(emojis)
+
+        slotmachine = f"```xml\n>{a} {b} {c}<```"
+
+        if (a == b == c):
+            ema = discord.Embed(
+                title=f"{ctx.author.name}'s slot machine",
+                description=f"{slotmachine}\nAll matching, you won!",
+                color=discord.Color.green(),
+                timestamp=datetime.utcnow()
+            )
+            ema.set_footer(
+                text="Good job!"
+            )
+            await ctx.send(embed=ema)
+
+        elif (a == b) or (a == c) or (b == c):
+            emb = discord.Embed(
+                title=f"{ctx.author.name}'s slot machine",
+                description=f"{slotmachine}\n2 in a row, you won!",
+                color=discord.Color.yellow(),
+                timestamp=datetime.utcnow()
+            )
+            emb.set_footer(
+                text="Phew! doged a bullet."
+            )
+            await ctx.send(embed=emb)
+
+        else:
+          emc = discord.Embed(
+              title=f"{ctx.author.name}'s slot machine",
+              description=f"{slotmachine}\nNo match, you lost.",
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+          )
+          emc.set_footer(
+              text="Sucks to suck."
+          )
+          await ctx.send(embed=emc)
 
 
 # Adds the extention

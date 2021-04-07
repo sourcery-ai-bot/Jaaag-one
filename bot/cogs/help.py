@@ -30,7 +30,7 @@ class Help(commands.Cog):
             em.add_field(
                 name="__**Fun:**__",
                 value=
-                "`meme       :` Sends trending memes from reddit\n`8ball      :` Ask the 8ball a question\n`insult     :` Insult someone\n`hello      :` Say hello to the bot\n`say        :` Repeats your message",
+                "`meme       :` Sends trending memes from reddit\n`8ball      :` Ask the 8ball a question\n`insult     :` Insult someone\n`hello      :` Say hello to the bot\n`say        :` Repeats your message\n`slots      :` Try out your luck",
                 inline=False)
             em.add_field(
                 name="__**Moderation:**__",
