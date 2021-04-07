@@ -1,3 +1,4 @@
+# This whole file is stolen from https://github.com/MenuDocs/Discord.PY-Tutorials/blob/Episode-10/utils/json_loader.py
 import json
 
 from pathlib import Path
@@ -38,3 +39,4 @@ def write_json(data, filename):
     cwd = get_path()
     with open(cwd + "/bot_config/" + filename + ".json", "w") as file:
         json.dump(data, file, indent=4)
+        

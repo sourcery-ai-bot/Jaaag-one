@@ -1,3 +1,4 @@
+# this whole file is stolen from https://github.com/MenuDocs/Discord.PY-Tutorials/blob/Episode-10/utils/mongo.py
 import logging
 import collections
 
@@ -167,3 +168,4 @@ class Document:
         within other methods which require the actual data
         """
         return await self.db.find_one({"_id": id})
+        

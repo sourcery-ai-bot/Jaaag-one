@@ -24,15 +24,26 @@ class Fun(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def eightball(self, ctx, *, question):
-        """ Ask the 8ball a question and it shall reply"""
         responses = [
-            "It is certain.", "It is decidely so.", "Without a doubt.",
-            "Yes - definitely.", "You may rely on it.", "As I see it, yes.",
-            "Most likely", "Outlook good.", "Yes.", "Signs point to yes.",
-            "Reply hazy, try again.", "Ask again later.",
-            "Better not tell you now.", "Cannot predict now.",
-            "Concentrate and ask again.", "Dont count on it.",
-            "My reply is no.", "My sources say no.", "Outlook not so good.",
+            "It is certain.", 
+            "It is decidely so.", 
+            "Without a doubt.",
+            "Yes - definitely.", 
+            "You may rely on it.", 
+            "As I see it, yes.",
+            "Most likely", 
+            "Outlook good.", 
+            "Yes.", 
+            "Signs point to yes.",
+            "Reply hazy, try again.", 
+            "Ask again later.",
+            "Better not tell you now.", 
+            "Cannot predict now.",
+            "Concentrate and ask again.",
+            "Dont count on it.",
+            "My reply is no.", 
+            "My sources say no.", 
+            "Outlook not so good.",
             "Very doubtful."
         ]
         await ctx.reply(f':8ball: {random.choice(responses)}',
@@ -56,7 +67,7 @@ class Fun(commands.Cog):
                 await ctx.send(embed=embed)
 
     # This command repeats the author's message
-    @commands.command()
+    @commands.command(aliases=["echo"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def say(self, ctx, *, arg):
@@ -90,55 +101,25 @@ class Fun(commands.Cog):
 
         await ctx.send(file=discord.File("profile.jpg"))
 
-    # These commands are to be ignored, My friends made me add them and they have no special function other than sending a gif and a rickroll link
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def rickroll(self, ctx):
-        await ctx.send('Here, get ricked... https://youtu.be/dQw4w9WgXcQ')
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def kekw(self, ctx):
-        await ctx.send('https://tenor.com/view/kekgiggle-kekw-gif-20353601')
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def omgwow(self, ctx):
-        await ctx.send('https://tenor.com/view/omg-oh-my-god-wow-gif-11411674')
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def oof(self, ctx):
-        await ctx.send(
-            'https://tenor.com/view/whoo-wtf-supa-hot-fire-rap-battle-im-not-arapper-gif-16789777'
-        )
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def bonk(self, ctx):
-        await ctx.send(
-            'https://tenor.com/view/walter-bonk-walter-bonk-nelson-dog-gif-15721111def'
-        )
-
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def insult(self, ctx, *, member: discord.Member = None):
 
         if member == self.bot.user:
-            await ctx.send(f"{ctx.author.mention} {random.choice(botinsults)}")
+            await ctx.send(
+              f"{ctx.author.mention} {random.choice(botinsults)}"
+                )
 
         elif member is None:
-            await ctx.send(f"{ctx.author.mention} {random.choice(insults)}")
+            await ctx.send(
+              f"{ctx.author.mention} {random.choice(insults)}"
+              )
 
         else:
-            await ctx.send(f'{member.mention} {random.choice(insults)}')
+            await ctx.send(
+              f'{member.mention} {random.choice(insults)}'
+              )
 
 
 # Adds the extention

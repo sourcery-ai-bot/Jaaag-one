@@ -3,7 +3,9 @@ import discord
 from discord.ext import commands
 import platform
 import json
-from datetime import datetime
+import asyncio
+from datetime import datetime, timedelta
+import psutil
 
 
 # Intializing the extension
@@ -82,45 +84,18 @@ class utility(commands.Cog):
         embed.set_footer(text=f"Created at: {time}")
         await ctx.send(embed=embed)
 
-    # A command to view some stats about the Bot
-    #@commands.command()
-    #@commands.cooldown(1, 15, commands.BucketType.user)
-    #async def stats(self, ctx):
-        #pythonv = platform.python_version()
-        #dpy = discord.__version__
-        #serverCount = len(self.bot.guilds)
-        #memberCount = len(set(self.bot.get_all_members()))
-        #embed = discord.Embed(title="Jaaag Help Menu",
-                              #description="**Bot stats**",
-                              #color=discord.Color.blue(),
-                              #timestamp=datetime.utcnow())
-        #embed.add_field(name="**Server count:**",
-                        #value=f"`{serverCount}` guilds",
-                        #inline=False)
-        #embed.add_field(name="**Member count:**",
-                        #value=f"`{memberCount}` users",
-                        #inline=False)
-        #embed.add_field(name="**Python version:**",
-                        #value=f"`{pythonv}`",
-                        #inline=False)
-        #embed.add_field(name="**Discord.py version:**",
-                        #value=f"`{dpy}`",
-                        #inline=False)
-        #await ctx.send(embed=embed)
-    #this command has been temporarily commented out because it's showing wrong stats. This will be fixed later.
 
-    @commands.command()
+    @commands.command(aliases=["pre"])
     @commands.guild_only()
-    @commands.has_guild_permissions(manage_guild=True)
-    async def setprefix(self, ctx, *, prefix):
+    @commands.has_permissions(manage_guild=True)
+    async def setprefix(self, ctx, prefix):
         await self.bot.config.upsert({"_id": ctx.guild.id, "prefix": prefix})
         await ctx.send(
-            f"The guild prefix has been set to `{prefix}`. Use `{prefix}setprefix [prefix]` to change it again!"
-        )
+            f"The guild prefix has been set to `{prefix}`. Use `{prefix}setprefix [prefix]` to change it again!")
 
     @commands.command()
     @commands.guild_only()
-    @commands.has_guild_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def resetprefix(self, ctx):
         await self.bot.config.unset({"_id": ctx.guild.id, "prefix": 1})
         await ctx.send(
@@ -141,7 +116,7 @@ class utility(commands.Cog):
         """A command to snipe delete messages."""
         if not self.last_msg:
             await ctx.send("There is no message to snipe!")
-            return
+            return  
 
         author = self.last_msg.author
         content = self.last_msg.content
@@ -258,7 +233,37 @@ class utility(commands.Cog):
             "Bot list links:\n[Top.gg](https://top.gg/bot/816034868899086386/vote)",
             inline=False)
         await ctx.send(embed=embed)
-
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        logchannel = await self.bot.fetch_channel(828972017491116032)
+        embed= discord.Embed(
+            color=0x33fcff,
+            timestamp=datetime.utcnow()
+        )
+        embed.set_author(
+            name="New Server Joined!",
+            icon_url=f"{self.bot.user.avatar_url}"
+        )
+        embed.set_thumbnail(
+            url=f"{guild.icon_url}"
+        )
+        embed.add_field(
+            name="**Name:**",
+            value=f"{guild}",
+            inline=False
+        )
+        embed.add_field(
+            name="**Guild ID:**",
+            value=f"{guild.id}",
+            inline=False
+        )
+        embed.add_field(
+            name="**Members:**",
+            value=f"{guild.member_count}", 
+            inline=False
+        )
+        await logchannel.send(embed=embed)
 
 # Adds the extention
 def setup(bot: commands.Bot):

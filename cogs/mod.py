@@ -7,6 +7,12 @@ from discord.ext import commands
 from discord.ext.commands import Converter, Greedy
 from discord.ext.commands import BadArgument
 from typing import Optional
+from datetime import datetime
+import logging
+import re
+import unicodedata
+
+log = logging.getLogger("Adminutils")
 
 
 class BannedUser(Converter):
@@ -37,6 +43,18 @@ class Mod(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
+    # A command to set a channel to log moderation events to
+    @commands.command(aliases=["mls"])
+    @commands.guild_only()
+    @commands.has_permissions(manage_guild=True)
+    @commands.bot_has_permissions(manage_guild=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def modlogset(self, ctx, channel: discord.TextChannel=None):
+      if channel is None:
+        channel=ctx.channel
+      await self.bot.modlog.upsert({"_id": ctx.guild.id, "modlog": channel.id})
+      await ctx.send(f"Modlog events will now be posted to {channel.mention}.")
+
     # A command to kick a user from a server, can only be used by server moderators
     @commands.command()
     @commands.guild_only()
@@ -44,8 +62,37 @@ class Mod(commands.Cog):
     @commands.has_permissions(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member, *, reason=None):
-        await ctx.guild.kick(user, reason=reason)
-        await ctx.send(f'Done. **{user.name}** was kicked.', delete_after=3)
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+            await ctx.send(
+              f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+            )
+        else:
+            modlogchannel = data["modlog"]
+            modlog = await self.bot.fetch_channel(modlogchannel)
+            await ctx.guild.kick(user, reason=reason)
+            await ctx.send(f'Done. **{user.name}** was kicked.', delete_after=3)
+            embed = discord.Embed(
+              title="Kick | :boot:",
+              color=0xa84300,
+              timestamp=datetime.utcnow()
+            )
+            embed.add_field(
+              name="Offender:",
+              value=f"{user.name}#{user.discriminator} {user.mention}",
+              inline=False
+            )
+            embed.add_field(
+              name="Reason:",
+              value=f"{reason}",
+              inline=False
+            )
+            embed.add_field(
+              name="Moderator:",
+              value=f"{ctx.author} ({ctx.author.id})",
+              inline=False
+            )
+            await modlog.send(embed=embed)
     
     # A command to ban a user from a server, can only be used by server moderators
     @commands.command()
@@ -54,8 +101,37 @@ class Mod(commands.Cog):
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
-        await ctx.guild.ban(user, reason=reason)
-        await ctx.send(f'Done. **{user.name}** was banned.', delete_after=3)
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+            await ctx.send(
+              f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+            )
+        else:
+          modlogchannel = data["modlog"]
+          modlog = await self.bot.fetch_channel(modlogchannel)
+          await ctx.guild.ban(user, reason=reason)
+          await ctx.send(f'Done. **{user.name}** was banned.', delete_after=3)
+          embed = discord.Embed(
+            title="Ban | :hammer:",
+            color=0xe74c3c,
+            timestamp=datetime.utcnow()
+          )
+          embed.add_field(
+            name="Offender:",
+            value=f"{user.name}#{user.discriminator} {user.mention}",
+            inline=False
+          )
+          embed.add_field(
+            name="Reason:",
+            value=f"{reason}",
+            inline=False
+          )
+          embed.add_field(
+            name="Moderator:",
+            value=f"{ctx.author} ({ctx.author.id})",
+            inline=False
+          )
+          await modlog.send(embed=embed)
 
     # A command to ban a user that isn't in the server, can only be used by server moderators and only accepts user id's
     @commands.command()
@@ -64,84 +140,156 @@ class Mod(commands.Cog):
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     async def forceban(self, ctx, user_id: int, *, reason=None):
-        await ctx.guild.ban(discord.Object(id=user_id), reason=reason)
-        await ctx.send(f'Done. **{self.bot.get_user(user_id)}** was forcebanned.',
-                       delete_after=3)
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+            await ctx.send(
+              f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+            )
+        else:
+          modlogchannel = data["modlog"]
+          modlog = await self.bot.fetch_channel(modlogchannel)
+          await ctx.guild.ban(discord.Object(id=user_id), reason=reason)
+          await ctx.send(f'Done. **{self.bot.get_user(user_id)}** was forcebanned.', delete_after=3)
+          embed = discord.Embed(
+            title="Forceban | :bust_in_silhouette: :hammer:",
+            color=0x992d22,
+            timestamp=datetime.utcnow()
+          )
+          embed.add_field(
+            name="Offender:",
+            value=f"{self.bot.get_user(user_id)} ({user_id})",
+            inline=False
+          )
+          embed.add_field(
+            name="Reason:",
+            value=f"{reason}",
+            inline=False
+          )
+          embed.add_field(
+            name="Moderator:",
+            value=f"{ctx.author} ({ctx.author.id})",
+            inline=False
+          )
+          await modlog.send(embed=embed)
 
     # A command to unban a user from a server, can only be used by server moderators
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
+    @commands.bot_has_permissions(ban_members=True)
     async def unban(self, ctx, targets: Greedy[BannedUser], *, reason: Optional[str] = "No reason provided."):
-      if not len(targets):
-        await ctx.send("One or more required arguments are missing.")
-
+      data = await self.bot.modlog.get_by_id(ctx.guild.id)
+      if not data or "modlog" not in data:
+          await ctx.send(
+            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+          )
       else:
-        for target in targets:
-          await ctx.guild.unban(target, reason=reason)
+        modlogchannel = data["modlog"]
+        modlog = await self.bot.fetch_channel(modlogchannel)
+        if not len(targets):
+          await ctx.send("One or more required arguments are missing.")
 
-        await ctx.send(f"**{target}** has been unbanned sucessfully", delete_after=3)
+        else:
+          for target in targets:
+            await ctx.guild.unban(target, reason=reason)
+
+          await ctx.send(f"**{target}** has been unbanned sucessfully", delete_after=3)
+          embed = discord.Embed(
+            title="Unban | :dove:",
+            color=0x33fcff,
+            timestamp=datetime.utcnow()
+          )
+          embed.add_field(
+            name="Offender:",
+            value=f"{target}",
+            inline=False
+          )
+          embed.add_field(
+            name="Reason:",
+            value=f"{reason}",
+            inline=False
+          )
+          embed.add_field(
+            name="Moderator:",
+            value=f"{ctx.author} ({ctx.author.id})",
+            inline=False
+          )
+          await modlog.send(embed=embed)
 
     # A command to mute a user in the server, can only be used by server moderators, the user will be automatically unmuted after the specified mute duration ends
-    @commands.command()
+    @commands.command(aliases=["tempmute"])
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
-    async def mute(self,
-                   ctx,
-                   member: discord.Member,
-                   time: int,
-                   d,
-                   *,
-                   reason=None):
-        guild = ctx.guild
+    async def mute(self, ctx, member: discord.Member, time: int, d, *, reason=None):
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+          await ctx.send(
+            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+          )
+        else:
+            modlogchannel = data["modlog"]
+            modlog = await self.bot.fetch_channel(modlogchannel)
+            guild = ctx.guild
 
-        for role in guild.roles:
-            if role.name == "Muted":
-                await member.add_roles(role)
+            for role in guild.roles:
+                if role.name == "Muted":
+                    await member.add_roles(role)
+                    await ctx.send(f"Muted {member.name} for {time}{d}.", delete_after=3)
+                    embed = discord.Embed(
+                      title="Server Mute | :mute:",
+                      color=0xe67e22,
+                      timestamp=datetime.utcnow()
+                    )
+                    embed.add_field(
+                      name="Offender:",
+                      value=f"{member.name}#{member.discriminator} {member.mention}",
+                      inline=False
+                    )
+                    embed.add_field(
+                      name="Reason:",
+                      value=f"{reason}",
+                      inline=False
+                    )
+                    embed.add_field(
+                      name="Moderator:",
+                      value=f"{ctx.author} ({ctx.author.id})",
+                      inline=False
+                    )
+                    await modlog.send(embed=embed)
 
-                embed = discord.Embed(
-                    title="Mute! :mute:",
-                    description=f"{member.mention} has been muted.",
-                    colour=discord.Colour.red())
-                embed.add_field(name="Reason:", value=reason, inline=False)
-                embed.add_field(name="Responsible moderator:",
-                                value=f"{ctx.author.mention}",
-                                inline=False)
-                embed.add_field(name="time left till unmute:",
-                                value=f"{time}{d}",
-                                inline=False)
-                await ctx.send(embed=embed, delete_after=3)
+                    if d == "s":
+                        await asyncio.sleep(time)
 
-                if d == "s":
-                    await asyncio.sleep(time)
+                    if d == "m":
+                        await asyncio.sleep(time * 60)
 
-                if d == "m":
-                    await asyncio.sleep(time * 60)
+                    if d == "h":
+                        await asyncio.sleep(time * 60 * 60)
 
-                if d == "h":
-                    await asyncio.sleep(time * 60 * 60)
+                    if d == "d":
+                        await asyncio.sleep(time * 60 * 60 * 24)
 
-                if d == "d":
-                    await asyncio.sleep(time * 60 * 60 * 24)
-
-                await member.remove_roles(role)
-
-                embed = discord.Embed(
-                    title="Unmute! :loud_sound:",
-                    description=f"{member.mention} has been unmuted.",
-                    colour=discord.Colour.red())
-                embed.add_field(
-                    name=f"Automatic unmute after {time}{d}",
-                    value=
-                    f"Member in question: {member.mention}\nResponsible moderator: {ctx.author.mention}",
-                    inline=False)
-                await ctx.send(embed=embed, delete_after=3)
-
-                return
+                    await member.remove_roles(role)
+                    emb = discord.Embed(
+                      title="Server Unmute | :speaker:",
+                      color=0x2ecc71,
+                      timestamp=datetime.utcnow()
+                    )
+                    emb.add_field(
+                      name="Offender:",
+                      value=f"{member.name}#{member.discriminator} {member.mention}",
+                      inline=False
+                    )
+                    emb.add_field(
+                      name="Reason:",
+                      value=f"Automatic unmute from mute made {time}{d} ago\nby {ctx.author} ({ctx.author.id})",
+                      inline=False
+                    )
+                    await modlog.send(embed=emb)
+                    return
 
     # A command to unmute a user in the server, can only be used by server moderators
     @commands.command()
@@ -150,57 +298,142 @@ class Mod(commands.Cog):
     @commands.has_permissions(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     async def unmute(self, ctx, member: discord.Member, *, reason=None):
-        guild = ctx.guild
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+          await ctx.send(
+            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+          )
+        else:
+            modlogchannel = data["modlog"]
+            modlog = await self.bot.fetch_channel(modlogchannel)
+            guild = ctx.guild
 
-        for role in guild.roles:
-            if role.name == "Muted":
-                await member.remove_roles(role)
+            for role in guild.roles:
+                if role.name == "Muted":
 
-                embed = discord.Embed(
-                    title="Unmute! :loud_sound:",
-                    description=f"{member.mention} has been unmuted.",
-                    colour=discord.Colour.red())
-                embed.add_field(name="Reason:",
-                                value=f"{reason}",
-                                inline=False)
-                embed.add_field(name="Responsible moderator:",
-                                value=f"{ctx.author.mention}",
-                                inline=False)
-                await ctx.send(embed=embed, delete_after=3)
+                    await member.remove_roles(role)
+                    await ctx.send(f"Done. Unmuted {member.name}.", delete_after=3)
+                    embed = discord.Embed(
+                      title="Server Unmute | :speaker:",
+                      color=0x2ecc71,
+                      timestamp=datetime.utcnow()
+                    )
+                    embed.add_field(
+                      name="Offender:",
+                      value=f"{member.name}#{member.discriminator} {member.mention}",
+                      inline=False
+                    )
+                    embed.add_field(
+                      name="Reason:",
+                      value=f"{reason}",
+                      inline=False
+                    )
+                    embed.add_field(
+                      name="Moderator:",
+                      value=f"{ctx.author} ({ctx.author.id})",
+                      inline=False
+                    )
+                    await modlog.send(embed=embed)
+
     
     # A command to delete messages in a text channel, can only be used by server administrators
-    @commands.command()
+    @commands.command(aliases=["cleanup"])
     @commands.guild_only()
     @commands.cooldown(1, 8, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True)
     async def purge(self, ctx, messages: int):
-        if messages > 99:
-            messages = 99
-        await ctx.channel.purge(limit=messages + 1)
-        await ctx.send(f'Done. {messages} messages were purged.',
-                       delete_after=3)
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+          await ctx.send(
+            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+          )
+        else:
+            modlogchannel = data["modlog"]
+            modlog = await self.bot.fetch_channel(modlogchannel)
+            if messages > 99:
+                messages = 99
+            await ctx.channel.purge(limit=messages + 1)
+            await ctx.send(f'Done. {messages} messages were purged.',
+                          delete_after=3)
+            embed = discord.Embed(
+              title="Purge | :speech_balloon:",
+              description=f"{messages} messages have been purged in {ctx.channel.mention}",
+              color=0xe67e22,
+              timestamp=datetime.utcnow()
+            )
+            embed.add_field(
+              name="Moderator:",
+              value=f"{ctx.author} ({ctx.author.id})",
+              inline=False
+            )
+            await modlog.send(embed=embed)
     
-    # A command to disable the ability of users to send messsages in a text channel, can only be used by server administrators
-    @commands.command(aliases=['lockchan'])
+    @commands.command(aliases=["rename"])
     @commands.guild_only()
+    @commands.has_permissions(manage_nicknames=True)
+    @commands.bot_has_permissions(manage_nicknames=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @commands.has_permissions(administrator=True)
-    @commands.bot_has_permissions(manage_channels=True)
-    async def lockit(self, ctx):
-        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
-        await ctx.send(f"Done. Locked {ctx.channel.mention}")
-    
-    # The opposite of the above command
-    @commands.command(aliases=['ulockchan'])
-    @commands.guild_only()
-    @commands.cooldown(1, 8, commands.BucketType.user)
-    @commands.has_permissions(administrator=True)
-    @commands.bot_has_permissions(manage_channels=True)
-    async def unlockit(self, ctx):
-        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-        await ctx.send(f"Done. Unlocked {ctx.channel.mention}")
+    async def nick(self, ctx, user: discord.Member = None, *, nickname: str = None):
+        data = await self.bot.modlog.get_by_id(ctx.guild.id)
+        if not data or "modlog" not in data:
+          await ctx.send(
+            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+          )
+        else:
+            modlogchannel = data["modlog"]
+            modlog = await self.bot.fetch_channel(modlogchannel)
+            if nickname is None or user is None and len(nickname) >= 2:
+                embed = discord.Embed(
+                    color=discord.Color.red(),
+                    title="An error occurred.",
+                    description=f"Please follow the format: `{ctx.prefix}setnick {'user'} {'new nickname'}`.\n"
+                    f"If you followed the format please make sure that the new nickname is at least two characters long.",
+                )
+                return await ctx.send(embed=embed)
+            await user.edit(nick=nickname, reason=f"Nickname edit by {ctx.message.author.name} ({ctx.message.author.id})")
+            await ctx.send(f"Done. Changed {user}'s nickname from {user.display_name} to {nickname}.", delete_after=3)
+            embed = discord.Embed(
+              title="Nickname change | :lock_with_ink_pen:",
+              color=0xe67e22,
+              timestamp=datetime.utcnow()
+            )
+            embed.add_field(
+              name="Offender:",
+              value=f"{user}\n**Old Nickname:** {user.display_name}\n**New Nickname:** {nickname}",
+              inline=False
+            )
+            embed.add_field(
+              name="Moderator:",
+              value=f"{ctx.author} ({ctx.author.id})",
+              inline=False
+            )
+            await modlog.send(embed=embed)
+
+    @nick.error
+    async def nick_error(self, ctx, error):
+        # error handler
+        if isinstance(error, commands.CheckFailure):
+            return
+        elif isinstance(error, commands.NoPrivateMessage):
+            return
+        elif isinstance(error, commands.BotMissingPermissions):
+            embed = discord.Embed(
+                color=discord.Color.red(),
+                title="I am missing a necessary permission.",
+                description="Please make sure I have the manage nicknames permission.",
+            )
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.CommandError):
+            embed = discord.Embed(
+                color=discord.Color.red(), title="Something didn't go quite right...", description=" "
+            )
+            embed.set_author(name=f"{ctx.message.author}", icon_url=f"{ctx.message.author.avatar_url}")
+            await ctx.send(embed=embed)
+            log.exception(error, exc_info=error)
+
 
 # Adds the extention
 def setup(bot: commands.Bot):
     bot.add_cog(Mod(bot))
+    

@@ -62,6 +62,7 @@ async def on_ready():
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.db = bot.mongo["jaaagdocs"]
     bot.config = Document(bot.db, "config")
+    bot.modlog = Document(bot.db, "modlogchannel")
     print("Initializing Database\n-----")
 
 
@@ -85,62 +86,50 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-@bot.group()
-@commands.is_owner()
-async def sudo(ctx):
-    if ctx.invoked_subcommand is None:
-        await ctx.send(
-            "Use `..sudo <command>` to perform your bot admin actions."
-            )
 
-
-@sudo.command()
+@bot.command()
 @commands.is_owner()
 async def load(ctx, extension):
-    bot.load_extension(f'cogs.{extension}')
-    await ctx.send(f"Sucessfully loaded the `{extension}` Cog."
-    )
-
-
-@sudo.command()
-@commands.is_owner()
-async def unload(ctx, extension):
-    bot.unload_extension(f'cogs.{extension}')
+    bot.load_extension(
+      f'cogs.{extension}'
+      )
     await ctx.send(
-        f"Successfully unloaded the `{extension}` Cog.\nLol why are u making me more useless?"
+      f"`{extension}` Cog ha been loaded."
     )
-
-
-@sudo.command()
-@commands.is_owner()
-async def reload(ctx, extension):
-    bot.unload_extension(f'cogs.{extension}')
-    bot.load_extension(f'cogs.{extension}')
-    await ctx.send(f"Done. Reloaded The `{extension}` Cog."
-    )
-
-
-@sudo.command()
-@commands.is_owner()
-async def shutdown(ctx):
-    await ctx.send("logging out... bye!")
-    await ctx.bot.logout()
-
-
-bot.launch_time = datetime.utcnow()
 
 
 @bot.command()
-@commands.guild_only()
-@commands.cooldown(1, 10, commands.BucketType.user)
-async def uptime(ctx):
-    delta_uptime = datetime.utcnow() - bot.launch_time
-    hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
-    minutes, seconds = divmod(remainder, 60)
-    days, hours = divmod(hours, 24)
+@commands.is_owner()
+async def unload(ctx, extension):
+    bot.unload_extension(
+      f'cogs.{extension}'
+      )
     await ctx.send(
-        f"The bot has been up for`{days}`days , `{hours}`hours and `{minutes}`minutes."
+        f"`{extension}` Cog has been unloaded."
     )
+
+
+@bot.command()
+@commands.is_owner()
+async def reload(ctx, extension):
+    bot.unload_extension(
+      f'cogs.{extension}'
+      )
+    bot.load_extension(
+      f'cogs.{extension}'
+      )
+    await ctx.send(
+      f"`{extension}` Cog has been reloaded."
+    )
+
+
+@bot.command()
+@commands.is_owner()
+async def shutdown(ctx):
+    await ctx.send(
+      "logging out... bye!"
+      )
+    await ctx.bot.close()
 
 keep_alive()
 
@@ -150,3 +139,4 @@ if __name__ == "__main__":
             bot.load_extension(f"cogs.{file[:-3]}")
 
     bot.run(bot.config_token)
+    
