@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
-from bot.utils.stuff import insults, botinsults
+from Jaaagbot.utils.stuff import insults, botinsults
 from PIL import Image
 from io import BytesIO
 from datetime import datetime

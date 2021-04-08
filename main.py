@@ -10,8 +10,8 @@ from os import getenv
 from dotenv import load_dotenv
 from datetime import datetime
 
-from bot.utils.mongo import Document
-from bot.core.Keeping_alive import keep_alive
+from Jaaagbot.utils.mongo import Document
+from Jaaagbot.core.Keeping_alive import keep_alive
 
 load_dotenv()
 
@@ -114,7 +114,7 @@ async def on_message(message):
 @commands.is_owner()
 async def load(ctx, extension):
     bot.load_extension(
-      f'bot.cogs.{extension}'
+      f'Jaaagbot.cogs.{extension}'
       )
     await ctx.send(
       f"`{extension}` Cog has been loaded."
@@ -124,7 +124,7 @@ async def load(ctx, extension):
 @commands.is_owner()
 async def unload(ctx, extension):
     bot.unload_extension(
-      f'bot.cogs.{extension}'
+      f'Jaaagbot.cogs.{extension}'
       )
     await ctx.send(
         f"`{extension}` Cog has been unloaded."
@@ -134,10 +134,10 @@ async def unload(ctx, extension):
 @commands.is_owner()
 async def reload(ctx, extension):
     bot.unload_extension(
-      f'bot.cogs.{extension}'
+      f'Jaaagbot.cogs.{extension}'
       )
     bot.load_extension(
-      f'bot.cogs.{extension}'
+      f'Jaaagbot.cogs.{extension}'
       )
     await ctx.send(
       f"`{extension}` Cog has been reloaded."
@@ -155,9 +155,9 @@ async def shutdown(ctx):
 keep_alive()
 
 if __name__ == "__main__":
-    for file in os.listdir(cwd + "/bot/cogs"):
+    for file in os.listdir(cwd + "/Jaaagbot/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
-            bot.load_extension(f"bot.cogs.{file[:-3]}")
+            bot.load_extension(f"Jaaagbot.cogs.{file[:-3]}")
 
     bot.run(bot.config_token)
     
