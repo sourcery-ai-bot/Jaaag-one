@@ -81,7 +81,6 @@ class Fun(commands.Cog):
         await ctx.reply(f'sup {ctx.author.mention}!')
 
     # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster.
-
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -103,6 +102,7 @@ class Fun(commands.Cog):
 
         await ctx.send(file=discord.File("profile.jpg"))
 
+    # A command throws an insult at the user that the author mentions, if the user is none, then the author gets insulted and if the author tries the bot to get to insult itself, the bot will insult the author.
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -123,9 +123,10 @@ class Fun(commands.Cog):
               f'{member.mention} {random.choice(insults)}'
               )
     
+    # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command()
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def slots(self, ctx):
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
         a = random.choice(emojis)
@@ -154,7 +155,7 @@ class Fun(commands.Cog):
                 timestamp=datetime.utcnow()
             )
             emb.set_footer(
-                text="Phew! doged a bullet."
+                text="Close"
             )
             await ctx.send(embed=emb)
 
@@ -166,10 +167,9 @@ class Fun(commands.Cog):
               timestamp=datetime.utcnow()
           )
           emc.set_footer(
-              text="Sucks to suck."
+              text="Sucks to suck"
           )
           await ctx.send(embed=emc)
-
 
 # Adds the extention
 def setup(bot: commands.Bot):

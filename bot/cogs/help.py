@@ -278,6 +278,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emi)
 
+    # Help command for the nicknaming command
     @help.command(aliases=["rename"])
     async def nick(self, ctx):
         codej = f"""```xml\n<Syntax : {ctx.prefix}nick <user> [nickname] >\nAlias: {ctx.prefix}rename```"""
@@ -302,6 +303,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emj)
 
+    # help command for the modlogset command
     @help.command(aliases=["mls"])
     async def modlogset(self, ctx):
         codek = f"""```xml\n<Syntax : {ctx.prefix}modlogset [channel] >\nAlias: {ctx.prefix}mls```"""

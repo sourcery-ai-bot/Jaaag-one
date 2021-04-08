@@ -16,6 +16,7 @@ import unicodedata
 log = logging.getLogger("Adminutils")
 
 
+# Converter
 class BannedUser(Converter):
 	async def convert(self, ctx, arg):
 		if ctx.guild.me.guild_permissions.ban_members:
@@ -43,30 +44,6 @@ class Mod(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-
-    # A command to set a channel to log moderation events to
-    @commands.command(aliases=["mls"])
-    @commands.guild_only()
-    @commands.has_permissions(manage_guild=True)
-    @commands.bot_has_permissions(manage_guild=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def modlogset(self, ctx, channel: discord.TextChannel=None):
-      if channel is None:
-        channel=ctx.channel
-      await self.bot.modlog.upsert({"_id": ctx.guild.id, "modlog": channel.id})
-      await ctx.send(f"Modlog events will now be posted to {channel.mention}.")
-
-    @commands.command(aliases=["mrs", "muteset"])
-    @commands.guild_only()
-    @commands.has_permissions(manage_roles=True)
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def muteroleset(self, ctx, role: discord.Role=None):
-      if role is None:
-        await ctx.send("You need do mention a role to be set as the muterole.")
-      else:
-        await self.bot.muterole.upsert({"_id": ctx.guild.id, "muterole": role.id})
-        await ctx.send(f"The muterole has been set to {role.mention}")
 
     # A command to kick a user from a server, can only be used by server moderators
     @commands.command()
@@ -382,6 +359,7 @@ class Mod(commands.Cog):
             )
             await modlog.send(embed=embed)
     
+    # A command to change the nickname of a user
     @commands.command(aliases=["rename"])
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
@@ -423,6 +401,7 @@ class Mod(commands.Cog):
             )
             await modlog.send(embed=embed)
 
+    # Error hanler for the nick command
     @nick.error
     async def nick_error(self, ctx, error):
         # error handler
@@ -445,6 +424,7 @@ class Mod(commands.Cog):
             await ctx.send(embed=embed)
             log.exception(error, exc_info=error)
     
+    # A command to lock a text/voice channel
     @commands.command(aliases=["lockchan"])
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_channels=True)
@@ -497,6 +477,7 @@ class Mod(commands.Cog):
             )
         )
 
+    # A command to unlock a text/voice channel
     @commands.command(aliases=["ulockchan"])
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_channels=True)
