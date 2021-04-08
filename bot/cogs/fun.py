@@ -8,6 +8,7 @@ from PIL import Image
 from io import BytesIO
 from datetime import datetime
 
+
 # Intializing the extension
 class Fun(commands.Cog):
     """A cog containing fun commands."""
@@ -25,25 +26,13 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def eightball(self, ctx, *, question):
         responses = [
-            "It is certain.", 
-            "It is decidely so.", 
-            "Without a doubt.",
-            "Yes - definitely.", 
-            "You may rely on it.", 
-            "As I see it, yes.",
-            "Most likely", 
-            "Outlook good.", 
-            "Yes.", 
-            "Signs point to yes.",
-            "Reply hazy, try again.", 
-            "Ask again later.",
-            "Better not tell you now.", 
-            "Cannot predict now.",
-            "Concentrate and ask again.",
-            "Dont count on it.",
-            "My reply is no.", 
-            "My sources say no.", 
-            "Outlook not so good.",
+            "It is certain.", "It is decidely so.", "Without a doubt.",
+            "Yes - definitely.", "You may rely on it.", "As I see it, yes.",
+            "Most likely", "Outlook good.", "Yes.", "Signs point to yes.",
+            "Reply hazy, try again.", "Ask again later.",
+            "Better not tell you now.", "Cannot predict now.",
+            "Concentrate and ask again.", "Dont count on it.",
+            "My reply is no.", "My sources say no.", "Outlook not so good.",
             "Very doubtful."
         ]
         await ctx.reply(f':8ball: {random.choice(responses)}',
@@ -109,20 +98,14 @@ class Fun(commands.Cog):
     async def insult(self, ctx, *, member: discord.Member = None):
 
         if member == self.bot.user:
-            await ctx.send(
-              f"{ctx.author.mention} {random.choice(botinsults)}"
-                )
+            await ctx.send(f"{ctx.author.mention} {random.choice(botinsults)}")
 
         elif member is None:
-            await ctx.send(
-              f"{ctx.author.mention} {random.choice(insults)}"
-              )
+            await ctx.send(f"{ctx.author.mention} {random.choice(insults)}")
 
         else:
-            await ctx.send(
-              f'{member.mention} {random.choice(insults)}'
-              )
-    
+            await ctx.send(f'{member.mention} {random.choice(insults)}')
+
     # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command()
     @commands.guild_only()
@@ -140,36 +123,51 @@ class Fun(commands.Cog):
                 title=f"{ctx.author.name}'s slot machine",
                 description=f"{slotmachine}\nAll matching, you won!",
                 color=discord.Color.green(),
-                timestamp=datetime.utcnow()
-            )
-            ema.set_footer(
-                text="Good job!"
-            )
+                timestamp=datetime.utcnow())
+            ema.set_footer(text="Good job!")
             await ctx.send(embed=ema)
 
         elif (a == b) or (a == c) or (b == c):
             emb = discord.Embed(
                 title=f"{ctx.author.name}'s slot machine",
                 description=f"{slotmachine}\n2 in a row, you won!",
-                color=discord.Color.yellow(),
-                timestamp=datetime.utcnow()
-            )
-            emb.set_footer(
-                text="Close"
-            )
+                color=discord.Color.orange(),
+                timestamp=datetime.utcnow())
+            emb.set_footer(text="Close")
             await ctx.send(embed=emb)
 
         else:
-          emc = discord.Embed(
-              title=f"{ctx.author.name}'s slot machine",
-              description=f"{slotmachine}\nNo match, you lost.",
-              color=discord.Color.red(),
-              timestamp=datetime.utcnow()
-          )
-          emc.set_footer(
-              text="Sucks to suck"
-          )
-          await ctx.send(embed=emc)
+            emc = discord.Embed(
+                title=f"{ctx.author.name}'s slot machine",
+                description=f"{slotmachine}\nNo match, you lost.",
+                color=discord.Color.red(),
+                timestamp=datetime.utcnow())
+            emc.set_footer(text="Sucks to suck")
+            await ctx.send(embed=emc)
+
+    # A modified version of a hotrate command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
+    @commands.command(aliases=["hotrate"])
+    async def howhot(self, ctx, *, user: discord.Member = None):
+        if user is None:
+            user = ctx.author
+
+        r = random.randint(1, 100)
+        hot = r / 1.17
+
+        if hot > 25:
+            emoji = "❤"
+
+        elif hot > 50:
+            emoji = "💖"
+
+        elif hot > 75:
+            emoji = "💞"
+
+        else:
+            emoji = "💔"
+
+        await ctx.send(f"**{user.name}** is **{hot:.2f}%** hot {emoji}")
+
 
 # Adds the extention
 def setup(bot: commands.Bot):

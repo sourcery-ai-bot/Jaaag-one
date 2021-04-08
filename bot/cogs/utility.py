@@ -191,36 +191,6 @@ class utility(commands.Cog):
             inline=False)
         await ctx.send(embed=embed)
     
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild):
-        logchannel = await self.bot.fetch_channel(828972017491116032)
-        embed= discord.Embed(
-            color=0x33fcff,
-            timestamp=datetime.utcnow()
-        )
-        embed.set_author(
-            name="New Server Joined!",
-            icon_url=f"{self.bot.user.avatar_url}"
-        )
-        embed.set_thumbnail(
-            url=f"{guild.icon_url}"
-        )
-        embed.add_field(
-            name="**Name:**",
-            value=f"{guild}",
-            inline=False
-        )
-        embed.add_field(
-            name="**Guild ID:**",
-            value=f"{guild.id}",
-            inline=False
-        )
-        embed.add_field(
-            name="**Members:**",
-            value=f"{guild.member_count}", 
-            inline=False
-        )
-        await logchannel.send(embed=embed)
 
 # Adds the extention
 def setup(bot: commands.Bot):

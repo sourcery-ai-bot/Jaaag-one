@@ -1,7 +1,6 @@
 import os
 import json
 import logging
-import datetime
 
 import discord
 from pathlib import Path
@@ -12,7 +11,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 
 from bot.utils.mongo import Document
-from bot.Keeping_alive import keep_alive
+from bot.core.Keeping_alive import keep_alive
 
 load_dotenv()
 
@@ -45,6 +44,7 @@ bot.connection_url = os.getenv("MONGO")
 logging.basicConfig(level=logging.INFO)
 
 bot.blacklisted_users = []
+bot.blacklisted_guilds = []
 bot.cwd = cwd
 
 @bot.event
@@ -59,13 +59,36 @@ async def on_ready():
       status=discord.Status.dnd
     ) 
 
-    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
+    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(
+      bot.connection_url
+      )
+    )
     bot.db = bot.mongo["jaaagdocs"]
     bot.config = Document(bot.db, "config")
     bot.modlog = Document(bot.db, "modlogchannel")
     bot.muterole = Document(bot.db, "muterole")
     print("Initializing Database\n-----")
 
+@bot.event
+async def on_guild_join(guild):
+    if guild.id in bot.blacklisted_guilds:
+        await guild.leave()
+    return
+
+@bot.event
+async def on_command(command):
+    if command.guild.id in bot.blacklisted_guilds:
+        embed = discord.Embed(
+            title="Notice:",
+            description=
+                "```xml\nI have left this guild because it has been blacklisted.```",
+            color=discord.Color.red(),
+            timestamp=datetime.utcnow())
+        embed.set_author(name="Jaaag Error Menu",
+                        icon_url=f"{bot.user.avatar_url}")
+        await command.channel.send(embed=embed)
+        await command.guild.leave()
+        return
 
 @bot.event
 async def on_message(message):
@@ -87,7 +110,6 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-
 @bot.command()
 @commands.is_owner()
 async def load(ctx, extension):
@@ -98,7 +120,6 @@ async def load(ctx, extension):
       f"`{extension}` Cog has been loaded."
     )
 
-
 @bot.command()
 @commands.is_owner()
 async def unload(ctx, extension):
@@ -108,7 +129,6 @@ async def unload(ctx, extension):
     await ctx.send(
         f"`{extension}` Cog has been unloaded."
     )
-
 
 @bot.command()
 @commands.is_owner()
@@ -123,7 +143,6 @@ async def reload(ctx, extension):
       f"`{extension}` Cog has been reloaded."
     )
 
-
 @bot.command()
 @commands.is_owner()
 async def shutdown(ctx):
@@ -131,6 +150,7 @@ async def shutdown(ctx):
       "logging out... bye!"
       )
     await ctx.bot.close()
+
 
 keep_alive()
 
