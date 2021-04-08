@@ -1,4 +1,4 @@
-![jaaaglogo](https://cdn.discordapp.com/avatars/821087928599707698/18c1e2387496ec5fe01ffeeae78b9ed3.webp?size=512)
+![jaaaglogo](https://cdn.discordapp.com/avatars/816034868899086386/fff5d64131272b44a32c8ab72be1ce54.webp?size=512)
 # Jaaag-Bot
 ## Introduction-
 Jaaag is a [discord](https://discord.com/) chatbot written in python using the [discord.py library](https://github.com/Rapptz/discord.py).
