@@ -3,10 +3,11 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
-from Jaaagbot.utils.stuff import roast, jaaagroast
 from PIL import Image
 from io import BytesIO
 from datetime import datetime
+
+from Jaaagbot.utils.stuff import roast, jaaagroast
 
 
 # Intializing the extension
