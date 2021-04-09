@@ -13,7 +13,7 @@ from typing import Union
 import re
 import unicodedata
 
-log = logging.getLogger("Adminutils")
+log = logging.getLogger()
 
 
 # Converter

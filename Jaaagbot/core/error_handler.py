@@ -11,7 +11,7 @@ class Errors(commands.Cog):
     # Prints on the console when the extension is loaded 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        print(f"{self.__class__.__name__} listener has been loaded\n-----")
         
     # Error handler
     @commands.Cog.listener()

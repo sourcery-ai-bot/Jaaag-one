@@ -109,10 +109,11 @@ async def on_message(message):
         await message.channel.send(f"My prefix here is `{prefix}`")
 
     await bot.process_commands(message)
+    
 
-@bot.command()
+@bot.command(aliases=["load-c"])
 @commands.is_owner()
-async def load(ctx, extension):
+async def load_cog(ctx, extension):
     bot.load_extension(
       f'Jaaagbot.cogs.{extension}'
       )
@@ -120,9 +121,19 @@ async def load(ctx, extension):
       f"`{extension}` Cog has been loaded."
     )
 
-@bot.command()
+@bot.command(aliases=["load-l"])
 @commands.is_owner()
-async def unload(ctx, extension):
+async def load_listener(ctx, extension):
+    bot.load_extension(
+      f'Jaaagbot.core.{extension}'
+      )
+    await ctx.send(
+      f"`{extension}` Listener has been loaded."
+    )
+
+@bot.command(aliases=["unload-c"])
+@commands.is_owner()
+async def unload_cog(ctx, extension):
     bot.unload_extension(
       f'Jaaagbot.cogs.{extension}'
       )
@@ -130,9 +141,19 @@ async def unload(ctx, extension):
         f"`{extension}` Cog has been unloaded."
     )
 
-@bot.command()
+@bot.command(aliases=["unload-l"])
 @commands.is_owner()
-async def reload(ctx, extension):
+async def unload_listener(ctx, extension):
+    bot.unload_extension(
+      f'Jaaagbot.core.{extension}'
+      )
+    await ctx.send(
+        f"`{extension}` Listener has been unloaded."
+    )
+
+@bot.command(aliases=["reload-c"])
+@commands.is_owner()
+async def update_cog(ctx, extension):
     bot.unload_extension(
       f'Jaaagbot.cogs.{extension}'
       )
@@ -140,7 +161,20 @@ async def reload(ctx, extension):
       f'Jaaagbot.cogs.{extension}'
       )
     await ctx.send(
-      f"`{extension}` Cog has been reloaded."
+      f"`{extension}` Cog has been updated."
+    )
+
+@bot.command(aliases=["reload-l"])
+@commands.is_owner()
+async def update_listener(ctx, extension):
+    bot.unload_extension(
+      f"Jaaagbot.core.{extension}"
+    )
+    bot.load_extension(
+      f'Jaaagbot.core.{extension}'
+      )
+    await ctx.send(
+      f"`{extension}` Listener has been updated."
     )
 
 @bot.command()
@@ -153,6 +187,8 @@ async def shutdown(ctx):
 
 
 keep_alive()
+
+bot.load_extension("Jaaagbot.core.error_handler")
 
 if __name__ == "__main__":
     for file in os.listdir(cwd + "/Jaaagbot/cogs"):
