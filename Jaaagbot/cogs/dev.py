@@ -8,7 +8,7 @@ from datetime import datetime
 class Dev(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.bot.blacklisted_guilds = [800076084161806346]
+
 
     # Prints on the console when the extension is loaded
     @commands.Cog.listener()

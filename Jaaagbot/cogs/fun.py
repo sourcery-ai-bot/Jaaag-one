@@ -101,10 +101,10 @@ class Fun(commands.Cog):
             await ctx.send(f"{ctx.author.mention} {random.choice(jaaagroast)}")
 
         elif member is None:
-            await ctx.send(f"{ctx.author.mention} {random.choice(roasts)}")
+            await ctx.send(f"{ctx.author.mention} {random.choice(roast)}")
 
         else:
-            await ctx.send(f'{member.mention} {random.choice(roasts)}')
+            await ctx.send(f'{member.mention} {random.choice(roast)}')
 
     # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command()
