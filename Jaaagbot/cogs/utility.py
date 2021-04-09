@@ -32,7 +32,7 @@ class utility(commands.Cog):
         embed.set_author(
             name="Invite Jaaag Bot!",
             icon_url=
-            "https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024"
+            f"{self.bot.user.avatar_url}"
         )
         await ctx.send(embed=embed)
 
