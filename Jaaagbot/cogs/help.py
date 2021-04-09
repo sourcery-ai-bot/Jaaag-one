@@ -339,7 +339,7 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emk)
 
-    @help.command(aliases=["muteset"])
+    @help.command(aliases=["mrs", "muteset"])
     @commands.guild_only()
     async def muteroleset(self, ctx):
         codel = f"""```xml\n<Syntax : {ctx.prefix}muteroleset [channel] >\nAlias: {ctx.prefix}muteset```"""
