@@ -56,6 +56,7 @@ class Help(commands.Cog):
     
     # Help command for the kick command
     @help.command()
+    @commands.guild_only()
     async def kick(self, ctx):
         codea = f"""```xml\n<Syntax : {ctx.prefix}kick <user> [reason] >```"""
 
@@ -81,6 +82,7 @@ class Help(commands.Cog):
 
     # Help command for the ban command
     @help.command()
+    @commands.guild_only()
     async def ban(self, ctx):
         codeb = f"""```xml\n<Syntax : {ctx.prefix}ban <user> [reason] >```"""
 
@@ -105,6 +107,7 @@ class Help(commands.Cog):
 
     # Help command for the forceban command
     @help.command()
+    @commands.guild_only()
     async def forceban(self, ctx):
         codec = f"""```xml\n<Syntax : {ctx.prefix}forceban <user_id> [reason] >```"""
 
@@ -128,6 +131,7 @@ class Help(commands.Cog):
 
     # Help command for the mute command
     @help.command()
+    @commands.guild_only()
     async def mute(self, ctx):
         coded = f"""```xml\n<Syntax : {ctx.prefix}mute <user> <time> [reason] >\nAlias: {ctx.prefix}tempmute```"""
 
@@ -157,6 +161,7 @@ class Help(commands.Cog):
 
     # Help command for the unban command
     @help.command()
+    @commands.guild_only()
     async def unban(self, ctx):
         codee = f"""```xml\n<Syntax : {ctx.prefix}unban <user> [reason] >```"""
 
@@ -181,6 +186,7 @@ class Help(commands.Cog):
 
     # Help command for the unmute command
     @help.command()
+    @commands.guild_only()
     async def unmute(self, ctx):
         codef = f"""```xml\n<Syntax : {ctx.prefix}unmute <user> [reason] >```"""
 
@@ -206,6 +212,7 @@ class Help(commands.Cog):
 
     # Help command for the purge command
     @help.command()
+    @commands.guild_only()
     async def purge(self, ctx):
         codeg = f"""```xml\n<Syntax : {ctx.prefix}purge <messages> >\nAlias: {ctx.prefix}cleanup```"""
 
@@ -230,6 +237,7 @@ class Help(commands.Cog):
 
     # Help command for the channel-lock command
     @help.command(aliases=["lockchan"])
+    @commands.guild_only()
     async def lockit(self, ctx):
         codeh = f"""```xml\n<Syntax : {ctx.prefix}lockit [channel] >\nAlias: {ctx.prefix}lockchan```"""
 
@@ -255,6 +263,7 @@ class Help(commands.Cog):
 
     # Help command for the channel-unlock command
     @help.command(aliases=["ulockchan"])
+    @commands.guild_only()
     async def unlockit(self, ctx):
         codei = f"""```xml\n<Syntax : {ctx.prefix}unlockit [channel] >\nAlias: {ctx.prefix}ulockchan```"""
 
@@ -280,6 +289,7 @@ class Help(commands.Cog):
 
     # Help command for the nicknaming command
     @help.command(aliases=["rename"])
+    @commands.guild_only()
     async def nick(self, ctx):
         codej = f"""```xml\n<Syntax : {ctx.prefix}nick <user> [nickname] >\nAlias: {ctx.prefix}rename```"""
 
@@ -305,6 +315,7 @@ class Help(commands.Cog):
 
     # help command for the modlogset command
     @help.command(aliases=["mls"])
+    @commands.guild_only()
     async def modlogset(self, ctx):
         codek = f"""```xml\n<Syntax : {ctx.prefix}modlogset [channel] >\nAlias: {ctx.prefix}mls```"""
 
@@ -328,7 +339,30 @@ class Help(commands.Cog):
                       inline=False)
         await ctx.send(embed=emk)
 
+    @help.command(aliases=["muteset"])
+    @commands.guild_only()
+    async def muteroleset(self, ctx):
+        codel = f"""```xml\n<Syntax : {ctx.prefix}muteroleset [channel] >\nAlias: {ctx.prefix}muteset```"""
 
+        eml = discord.Embed(description=f"{codel}",
+                            color=0x33fcff,
+                            timestamp=datetime.utcnow())
+        eml.set_author(name=f"{self.bot.user.name} Help Menu",
+                       icon_url=f'{self.bot.user.avatar_url}')
+        eml.set_footer(text="Developed by GhOsT#4615")
+        eml.add_field(
+            name="**Set a Muterole.**",
+            value=
+            "Sets a role as the muterole to give when\nthe mute command is used.",
+            inline=False)
+        eml.add_field(
+            name="**Permissions**",
+            value="**Bot: `Manage Server`**\n**User: `Manage Server`**",
+            inline=False)
+        eml.add_field(name="**Cooldown:**",
+                      value="Can be used 1 time per 5 seconds, per user.",
+                      inline=False)
+        await ctx.send(embed=eml)
 #The help subcommands are limited to the moderation commands for now. There are a lot of other commands in the bot, but I was too lazy to make a help command for them. Maybe I'll do it later...
 
 
