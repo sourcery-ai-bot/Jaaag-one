@@ -1,11 +1,7 @@
 # Imports
 import discord
 from discord.ext import commands
-import platform
-import json
-import asyncio
-from datetime import datetime, timedelta
-import psutil
+from datetime import datetime
 
 
 # Intializing the extension
@@ -25,27 +21,19 @@ class utility(commands.Cog):
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def invite(self, ctx):
         embed = discord.Embed(
-            title='Jaaag bot invite',
-            description='This is our permenent invite for the bot.',
-            color=discord.Color.red(),
+            description="[Invite link](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)",
+            color=0x33fcff,
             timestamp=datetime.utcnow())
-
-        embed.set_footer(text='Hosted by GhOsT#4615')
+        embed.set_footer(text='Developed by GhOsT#4615')
         embed.set_thumbnail(
             url=
-            'https://cdn.discordapp.com/attachments/696099948072009788/697707125136293938/ezgif.com-gif-maker-19.gif'
+            "https://cdn.discordapp.com/attachments/696099948072009788/697707125136293938/ezgif.com-gif-maker-19.gif"
         )
         embed.set_author(
-            name='Jaaag Help Menu',
+            name="Invite Jaaag Bot!",
             icon_url=
-            'https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024'
+            "https://cdn.discordapp.com/avatars/816034868899086386/2333c167cf7af29613894e6e0073ec38.png?size=1024"
         )
-        embed.add_field(
-            name="link:",
-            value=
-            "Invite the bot using [this link](https://discord.com/api/oauth2/authorize?client_id=816034868899086386&permissions=8&scope=bot)",
-            inline=False)
-
         await ctx.send(embed=embed)
 
     # A command to view dome information about the server
