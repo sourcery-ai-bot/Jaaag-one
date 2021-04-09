@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
-from Jaaagbot.utils.stuff import insults, botinsults
+from Jaaagbot.utils.stuff import roast, jaaagroast
 from PIL import Image
 from io import BytesIO
 from datetime import datetime
@@ -91,20 +91,20 @@ class Fun(commands.Cog):
 
         await ctx.send(file=discord.File("profile.jpg"))
 
-    # A command throws an insult at the user that the author mentions, if the user is none, then the author gets insulted and if the author tries the bot to get to insult itself, the bot will insult the author.
-    @commands.command()
+    # A command throws an roast at the user that the author mentions, if the user is none, then the author gets roasted and if the author tries the bot to get to insult itself, the bot will really badly roast the author.
+    @commands.command(aliases=["insult"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def insult(self, ctx, *, member: discord.Member = None):
+    async def roast(self, ctx, *, member: discord.Member = None):
 
         if member == self.bot.user:
-            await ctx.send(f"{ctx.author.mention} {random.choice(botinsults)}")
+            await ctx.send(f"{ctx.author.mention} {random.choice(jaaagroast)}")
 
         elif member is None:
-            await ctx.send(f"{ctx.author.mention} {random.choice(insults)}")
+            await ctx.send(f"{ctx.author.mention} {random.choice(roasts)}")
 
         else:
-            await ctx.send(f'{member.mention} {random.choice(insults)}')
+            await ctx.send(f'{member.mention} {random.choice(roasts)}')
 
     # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command()
