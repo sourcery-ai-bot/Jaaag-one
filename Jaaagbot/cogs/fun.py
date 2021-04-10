@@ -19,7 +19,11 @@ class Fun(commands.Cog):
     # Prints on the console when the extension is loaded
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        print(
+          "{} Cog has been loaded\n-----".format(
+            self.__class__.__name__
+            )
+        )
 
     # A fun 8ball command
     @commands.command(aliases=['8ball'])
@@ -36,16 +40,19 @@ class Fun(commands.Cog):
             "My reply is no.", "My sources say no.", "Outlook not so good.",
             "Very doubtful."
         ]
-        await ctx.reply(f':8ball: {random.choice(responses)}',
-                        mention_author=True)
+        await ctx.reply(
+          ':8ball: {}'.format(
+            random.choice(responses)
+            ), 
+          mention_author=True
+        )
 
     # A fun command that sends trending memes from a subreddit as an embed
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def meme(self, ctx):
-        embed = discord.Embed(title="Memes",
-                              description="Here, take some memes")
+        embed = discord.Embed(title="Memes")
 
         async with aiohttp.ClientSession() as cs:
             async with cs.get(
@@ -60,7 +67,12 @@ class Fun(commands.Cog):
     @commands.command(aliases=["echo"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def say(self, ctx, *, arg):
+    async def say(self, ctx, *, arg=None):
+      if arg == None:
+        await ctx.send(
+          "There's nothing to say!"
+        )
+      else:
         await ctx.send(arg)
 
     # A simple command that replies back to the user
@@ -68,7 +80,11 @@ class Fun(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hello(self, ctx):
-        await ctx.reply(f'sup {ctx.author.mention}!')
+        await ctx.reply(
+          "sup {}!".format(
+            ctx.author.mention
+            )
+        )
 
     # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster.
     @commands.command()
@@ -90,7 +106,9 @@ class Fun(commands.Cog):
 
         wanted.save("profile.jpg")
 
-        await ctx.send(file=discord.File("profile.jpg"))
+        await ctx.send(
+          file=discord.File("profile.jpg")
+        )
 
     # A command throws an roast at the user that the author mentions, if the user is none, then the author gets roasted and if the author tries the bot to get to insult itself, the bot will really badly roast the author.
     @commands.command(aliases=["insult"])
@@ -99,13 +117,25 @@ class Fun(commands.Cog):
     async def roast(self, ctx, *, member: discord.Member = None):
 
         if member == self.bot.user:
-            await ctx.send(f"{ctx.author.mention} {random.choice(jaaagroast)}")
+            await ctx.send(
+              "{} {}".format(
+                ctx.author.mention, random.choice(jaaagroast)
+                )
+            )
 
         elif member is None:
-            await ctx.send(f"{ctx.author.mention} {random.choice(roast)}")
+            await ctx.send(
+              "{} {}".format(
+                ctx.author.mention, random.choice(roast)
+                )
+            )
 
         else:
-            await ctx.send(f'{member.mention} {random.choice(roast)}')
+            await ctx.send(
+              "{} {}".format(
+                member.mention, random.choice(roast)
+                )
+            )
 
     # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command()
@@ -116,34 +146,54 @@ class Fun(commands.Cog):
         a = random.choice(emojis)
         b = random.choice(emojis)
         c = random.choice(emojis)
-
         slotmachine = f"```xml\n>{a} {b} {c}<```"
 
         if (a == b == c):
             ema = discord.Embed(
-                title=f"{ctx.author.name}'s slot machine",
-                description=f"{slotmachine}\nAll matching, you won!",
-                color=discord.Color.green(),
-                timestamp=datetime.utcnow())
-            ema.set_footer(text="Good job!")
+              title="{}'s slot machine".format(
+                ctx.author.name
+                ),
+              description="{}\nAll matching, you won!".format(
+                slotmachine
+                ),
+              color=discord.Color.green(),
+              timestamp=datetime.utcnow()
+            )
+            ema.set_footer(
+              text="Good job!"
+            )
             await ctx.send(embed=ema)
 
         elif (a == b) or (a == c) or (b == c):
             emb = discord.Embed(
-                title=f"{ctx.author.name}'s slot machine",
-                description=f"{slotmachine}\n2 in a row, you won!",
-                color=discord.Color.orange(),
-                timestamp=datetime.utcnow())
-            emb.set_footer(text="Close")
+              title="{}'s slot machine".format(
+                ctx.author.name
+                ),
+              description="{}\n2 in a row, you won!".format(
+                slotmachine
+                ),
+              color=discord.Color.orange(),
+              timestamp=datetime.utcnow()
+            )
+            emb.set_footer(
+              text="Close"
+            )
             await ctx.send(embed=emb)
 
         else:
             emc = discord.Embed(
-                title=f"{ctx.author.name}'s slot machine",
-                description=f"{slotmachine}\nNo match, you lost.",
-                color=discord.Color.red(),
-                timestamp=datetime.utcnow())
-            emc.set_footer(text="Sucks to suck")
+              title="{}'s slot machine".format(
+                ctx.author.name
+                ),
+              description="{}\nNo match, you lost.".format(
+                slotmachine
+                ),
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+            )
+            emc.set_footer(
+              text="Sucks to suck"
+            )
             await ctx.send(embed=emc)
 
     # A modified version of a hotrate command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
@@ -153,21 +203,67 @@ class Fun(commands.Cog):
             user = ctx.author
 
         r = random.randint(1, 100)
-        hot = r / 1.17
+        hot = r
 
         if hot > 25:
             emoji = "❤"
+            em=discord.Embed(
+              title="Hotrate machine",
+              description=f"```{user.name} is {hot}% hot!```",
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+            )
+            em.set_footer(
+              text="{}".format(
+                emoji
+              )
+            )
+            await ctx.send(embed=em)
 
         elif hot > 50:
             emoji = "💖"
+            ema=discord.Embed(
+              title="Hotrate machine",
+              description=f"```{user.name} is {hot}% hot!```",
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+            )
+            ema.set_footer(
+              text="{}".format(
+                emoji
+              )
+            )
+            await ctx.send(embed=ema)
 
         elif hot > 75:
             emoji = "💞"
+            emb=discord.Embed(
+              title="Hotrate machine",
+              description=f"```{user.name} is {hot}% hot!```",
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+            )
+            emb.set_footer(
+              text="{}".format(
+                emoji
+              )
+            )
+            await ctx.send(embed=emb)
 
         else:
             emoji = "💔"
-
-        await ctx.send(f"**{user.name}** is **{hot:.2f}%** hot {emoji}")
+            emc=discord.Embed(
+              title="Hotrate machine",
+              description=f"```{user.name} is {hot}% hot!```",
+              color=discord.Color.red(),
+              timestamp=datetime.utcnow()
+            )
+            emc.set_footer(
+              text="{}".format(
+                emoji
+              )
+            )
+            await ctx.send(embed=emc)
 
 
 # Adds the extention

@@ -72,10 +72,14 @@ class Adminutils(commands.Cog):
         author = self.last_msg.author
         content = self.last_msg.content
 
-        embed = discord.Embed(title=f"Message from {author}:",
-                              description=content,
-                              color=0x33fcff,
-                              timestamp=datetime.utcnow())
+        embed = discord.Embed(
+          title="Message from {}:".format(
+            author
+            ),
+          description=content,
+          color=0x33fcff,
+          timestamp=datetime.utcnow()
+        )
         await ctx.send(embed=embed)
         		
     
