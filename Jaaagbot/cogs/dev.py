@@ -1,8 +1,9 @@
 # Imports
+import os
 import discord
 from discord.ext import commands
 from datetime import datetime
-
+import typing
 
 # Intializing the extension
 class Dev(commands.Cog):
@@ -162,6 +163,70 @@ class Dev(commands.Cog):
             guild.name, guild.id
             )
         )
+    
+
+    # Overly complicated cog reload command built watching this video: https://www.youtube.com/watch?v=DFLyOPkHa1w
+    @commands.command()
+    @commands.is_owner()
+    async def updatetest(self, ctx, cog=None):
+        if not cog:
+            async with ctx.typing():
+                embed = discord.Embed(
+                    title="Updating all cogs!",
+                    color=0x808080,
+                    timestamp=ctx.message.created_at
+                )
+                for ext in os.listdir("./cogs/"):
+                    if ext.endswith(".py") and not ext.startswith("_"):
+                        try:
+                            self.bot.unload_extension(f"Jaaagbot.cogs.{ext[:-3]}")
+                            self.bot.load_extension(f"Jaaagbot.cogs.{ext[:-3]}")
+                            embed.add_field(
+                                name=f"Updated the following Cog(s): `{ext}`",
+                                value='\uFEFF',
+                                inline=False
+                            )
+                        except Exception as e:
+                            embed.add_field(
+                                name=f"Failed to update: `{ext}`",
+                                value=e,
+                                inline=False
+                            )
+                        await asyncio.sleep(0.5)
+                await ctx.send(embed=embed)
+        else:
+            async with ctx.typing():
+                embed = discord.Embed(
+                    title="Updating all cogs!",
+                    color=0x808080,
+                    timestamp=ctx.message.created_at
+                )
+                ext = f"{cog.lower()}.py"
+                if not os.path.exists(f"./cogs/{ext}"):
+                    embed.add_field(
+                        name=f"Failed to update: `{ext}`",
+                        value="This cog does not exist.",
+                        inline=False
+                    )
+
+                elif ext.endswith(".py") and not ext.startswith("_"):
+                    try:
+                        self.bot.unload_extension(f"Jaaagbot.cogs.{ext[:-3]}")
+                        self.bot.load_extension(f"Jaaagbot.cogs.{ext[:-3]}")
+                        embed.add_field(
+                            name=f"Updated the following Cog(s): `{ext}`",
+                            value='\uFEFF',
+                            inline=False
+                        )
+                    except Exception:
+                        desired_trace = traceback.format_exc()
+                        embed.add_field(
+                            name=f"Failed to update: `{ext}`",
+                            value=desired_trace,
+                            inline=False
+                        )
+                await ctx.send(embed=embed)
+
 
 # Adds the extention
 def setup(bot: commands.Bot):
