@@ -208,8 +208,8 @@ class Fun(commands.Cog):
         hot = r
 
         if hot > 25:
-            emoji = "❤"
-            em=discord.Embed(
+            emojione = "❤"
+            em = discord.Embed(
               title="Hotrate machine",
               description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
@@ -217,14 +217,14 @@ class Fun(commands.Cog):
             )
             em.set_footer(
               text="{}".format(
-                emoji
+                emojione
               )
             )
             await ctx.send(embed=em)
 
         elif hot > 50:
-            emoji = "💖"
-            ema=discord.Embed(
+            emojitwo = "💖"
+            ema = discord.Embed(
               title="Hotrate machine",
               description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
@@ -232,14 +232,14 @@ class Fun(commands.Cog):
             )
             ema.set_footer(
               text="{}".format(
-                emoji
+                emojitwo
               )
             )
             await ctx.send(embed=ema)
 
         elif hot > 75:
-            emoji = "💞"
-            emb=discord.Embed(
+            emojithree = "💞"
+            emb = discord.Embed(
               title="Hotrate machine",
               description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
@@ -247,14 +247,14 @@ class Fun(commands.Cog):
             )
             emb.set_footer(
               text="{}".format(
-                emoji
+                emojithree
               )
             )
             await ctx.send(embed=emb)
 
         else:
-            emoji = "💔"
-            emc=discord.Embed(
+            emojifour = "💔"
+            emc = discord.Embed(
               title="Hotrate machine",
               description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
@@ -262,7 +262,7 @@ class Fun(commands.Cog):
             )
             emc.set_footer(
               text="{}".format(
-                emoji
+                emojifour
               )
             )
             await ctx.send(embed=emc)
