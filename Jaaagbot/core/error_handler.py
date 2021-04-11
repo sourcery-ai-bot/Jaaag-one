@@ -1,4 +1,5 @@
 # Imports
+import discord
 from discord.ext import commands
 
 
@@ -19,17 +20,24 @@ class Errors(commands.Cog):
                                error: commands.CommandError):
 
         if isinstance(error, commands.CommandNotFound):
-            return
+            message = ":x: **Error:**\n Command not found."
         elif isinstance(error, commands.CommandOnCooldown):
-            message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds. :hourglass_flowing_sand:"
+            message = f":x: **Error:**\nThis command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds."
         elif isinstance(error, commands.MissingPermissions):
-            message = "Looks like you are missing the required permissions to run this command. Sad..."
+            message = ":x: **Error:**\nLooks like you are missing the required permission(s) to run this command."
+        elif isinstance(error, commands.NoPrivateMessage):
+            try:
+                message = f":x: **Error:**\nThe command `{ctx.command}` cannot be used in Private Messages."
+            except discord.HTTPException:
+                pass
+        elif isinstance(error, commands.DisabledCommand):
+            await ctx.send(f":x: **Error:**\nThe command `{ctx.command}` is currently disabled.")
         elif isinstance(error, commands.UserInputError):
-            message = "Something about your input seems really wrong, Please try again."
+            message = ":x: **Error:**\nSomething about your input seems wrong, Please try again."
         else:
-            message = "Oops! Something went wrong while running the command. :man_shrugging:"
+            message = ":x: **Error:**\nSomething went wrong while running the command."
 
-        await ctx.send(message, delete_after=6)
+        await ctx.send(message)
 
 
 # Adds the extention

@@ -239,6 +239,11 @@ class Mod(commands.Cog):
                       inline=False
                     )
                     embed.add_field(
+                      name="Time:",
+                      value=f"{time}{d}",
+                      inline=False
+                    )
+                    embed.add_field(
                       name="Reason:",
                       value=f"{reason}",
                       inline=False
@@ -423,6 +428,7 @@ class Mod(commands.Cog):
             embed.set_author(name=f"{ctx.message.author}", icon_url=f"{ctx.message.author.avatar_url}")
             await ctx.send(embed=embed)
             log.exception(error, exc_info=error)
+            
     
     # A command to lock a text/voice channel
     @commands.command(aliases=["lockchan"])
@@ -477,6 +483,7 @@ class Mod(commands.Cog):
             )
         )
 
+
     # A command to unlock a text/voice channel
     @commands.command(aliases=["ulockchan"])
     @commands.has_permissions(manage_messages=True)
@@ -522,6 +529,7 @@ class Mod(commands.Cog):
             channel.mention
             )
         )
+
 
 # Adds the extention
 def setup(bot: commands.Bot):

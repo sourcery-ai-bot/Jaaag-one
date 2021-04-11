@@ -6,6 +6,7 @@ import aiohttp
 from PIL import Image
 from io import BytesIO
 from datetime import datetime
+import json
 
 from Jaaagbot.utils.stuff import roast, jaaagroast
 
@@ -106,9 +107,7 @@ class Fun(commands.Cog):
 
         wanted.save("profile.jpg")
 
-        await ctx.send(
-          file=discord.File("profile.jpg")
-        )
+        await ctx.send(file=discord.File("profile.jpg"))
 
     # A command throws an roast at the user that the author mentions, if the user is none, then the author gets roasted and if the author tries the bot to get to insult itself, the bot will really badly roast the author.
     @commands.command(aliases=["insult"])
@@ -197,73 +196,60 @@ class Fun(commands.Cog):
             await ctx.send(embed=emc)
 
     # A modified version of a hotrate command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
-    @commands.command(aliases=["hotrate"])
+    @commands.command(aliases=["hotrate", "hotr8"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def howhot(self, ctx, *, user: discord.Member = None):
         if user is None:
             user = ctx.author
-
         r = random.randint(1, 100)
         hot = r
-
-        if hot > 25:
-            emojione = "❤"
+        
+        if hot > 25 and hot < 50:
             em = discord.Embed(
-              title="Hotrate machine",
-              description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
               timestamp=datetime.utcnow()
             )
-            em.set_footer(
-              text="{}".format(
-                emojione
-              )
+            em.add_field(
+              name="Hot r8 machine",
+              value=f"```{user.name} is {hot}% hot!```\n💘",
+              inline=False
             )
             await ctx.send(embed=em)
-
-        elif hot > 50:
-            emojitwo = "💖"
+      
+        elif hot > 50 and hot < 75:
             ema = discord.Embed(
-              title="Hotrate machine",
-              description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
               timestamp=datetime.utcnow()
             )
-            ema.set_footer(
-              text="{}".format(
-                emojitwo
-              )
+            ema.add_field(
+              name="Hot r8 machine",
+              value=f"```{user.name} is {hot}% hot!```\n💋",
+              inline=False
             )
             await ctx.send(embed=ema)
 
-        elif hot > 75:
-            emojithree = "💞"
+        elif hot > 75 and hot < 100:
             emb = discord.Embed(
-              title="Hotrate machine",
-              description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
               timestamp=datetime.utcnow()
             )
-            emb.set_footer(
-              text="{}".format(
-                emojithree
-              )
+            emb.add_field(
+              name="Hot r8 machine",
+              value=f"```{user.name} is {hot}% hot!```\n🔥",
+              inline=False
             )
             await ctx.send(embed=emb)
 
         else:
-            emojifour = "💔"
             emc = discord.Embed(
-              title="Hotrate machine",
-              description=f"```{user.name} is {hot}% hot!```",
               color=discord.Color.red(),
               timestamp=datetime.utcnow()
             )
-            emc.set_footer(
-              text="{}".format(
-                emojifour
-              )
+            emc.add_field(
+              name="Hot r8 machine",
+              value=f"```{user.name} is {hot}% hot!```\n💔",
+              inline=False
             )
             await ctx.send(embed=emc)
 

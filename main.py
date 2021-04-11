@@ -1,5 +1,4 @@
 import os
-import json
 import logging
 
 import discord
@@ -46,10 +45,11 @@ bot.blacklisted_users = []
 bot.blacklisted_guilds = []
 bot.cwd = cwd
 
+
 @bot.event
 async def on_ready():
     print(
-        f"-----\nLogged in as: {bot.user.name}\n-----\nUser id: {bot.user.id}\n-----\nMy current prefix is: ..\n-----"
+        f"-----\nLogged in as: {bot.user.name}\n-----\nUser id: {bot.user.id}\n-----\nBase prefix: ..\n-----"
     )
     await bot.change_presence(
         activity=discord.Game(
@@ -68,11 +68,13 @@ async def on_ready():
     bot.muterole = Document(bot.db, "muterole")
     print("Initializing Database\n-----")
 
+
 @bot.event
 async def on_guild_join(guild):
     if guild.id in bot.blacklisted_guilds:
         await guild.leave()
     return
+
 
 @bot.event
 async def on_command(command):
@@ -88,6 +90,7 @@ async def on_command(command):
         await command.channel.send(embed=embed)
         await command.guild.leave()
         return
+
 
 @bot.event
 async def on_message(message):
@@ -105,7 +108,9 @@ async def on_message(message):
             prefix = ".."
         else:
             prefix = data["prefix"]
-        await message.channel.send(f"My prefix here is `{prefix}`")
+        await message.channel.send(
+          f"My prefix here is `{prefix}`"
+        )
 
     await bot.process_commands(message)
     
@@ -120,6 +125,7 @@ async def load_cog(ctx, extension):
       f"`{extension}` Cog has been loaded."
     )
 
+
 @bot.command(aliases=["load-l"])
 @commands.is_owner()
 async def load_listener(ctx, extension):
@@ -129,6 +135,7 @@ async def load_listener(ctx, extension):
     await ctx.send(
       f"`{extension}` Listener has been loaded."
     )
+
 
 @bot.command(aliases=["unload-c"])
 @commands.is_owner()
@@ -140,6 +147,7 @@ async def unload_cog(ctx, extension):
         f"`{extension}` Cog has been unloaded."
     )
 
+
 @bot.command(aliases=["unload-l"])
 @commands.is_owner()
 async def unload_listener(ctx, extension):
@@ -149,6 +157,7 @@ async def unload_listener(ctx, extension):
     await ctx.send(
         f"`{extension}` Listener has been unloaded."
     )
+
 
 @bot.command(aliases=["reload-c"])
 @commands.is_owner()
@@ -163,6 +172,7 @@ async def update_cog(ctx, extension):
       f"`{extension}` Cog has been updated."
     )
 
+
 @bot.command(aliases=["reload-l"])
 @commands.is_owner()
 async def update_listener(ctx, extension):
@@ -176,6 +186,7 @@ async def update_listener(ctx, extension):
       f"`{extension}` Listener has been updated."
     )
 
+
 @bot.command()
 @commands.is_owner()
 async def shutdown(ctx):
@@ -188,6 +199,7 @@ async def shutdown(ctx):
 keep_alive()
 
 bot.load_extension("Jaaagbot.core.error_handler")
+
 
 if __name__ == "__main__":
     for file in os.listdir(cwd + "/Jaaagbot/cogs"):

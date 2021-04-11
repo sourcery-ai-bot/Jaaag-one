@@ -1,14 +1,8 @@
 # Imports
 import discord
 from discord.ext import commands
-import random
-import platform
-import logging
-import re
-import unicodedata
-import aiohttp
 from datetime import datetime
-import asyncio
+
 
 # Intializing the extension
 class Adminutils(commands.Cog):
