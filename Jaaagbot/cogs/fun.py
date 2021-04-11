@@ -198,6 +198,8 @@ class Fun(commands.Cog):
 
     # A modified version of a hotrate command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
     @commands.command(aliases=["hotrate"])
+    @commands.guild_only()
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def howhot(self, ctx, *, user: discord.Member = None):
         if user is None:
             user = ctx.author
