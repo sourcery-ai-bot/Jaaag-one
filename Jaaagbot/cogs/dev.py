@@ -4,6 +4,9 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import typing
+import asyncio
+import traceback
+
 
 # Intializing the extension
 class Dev(commands.Cog):
@@ -172,23 +175,23 @@ class Dev(commands.Cog):
         if not cog:
             async with ctx.typing():
                 embed = discord.Embed(
-                    title="Updating all cogs!",
-                    color=0x808080,
+                    title="Updated all Cogs!",
+                    color=0x33fcff,
                     timestamp=ctx.message.created_at
                 )
-                for ext in os.listdir("./cogs/"):
+                for ext in os.listdir("Jaaagbot/cogs/"):
                     if ext.endswith(".py") and not ext.startswith("_"):
                         try:
                             self.bot.unload_extension(f"Jaaagbot.cogs.{ext[:-3]}")
                             self.bot.load_extension(f"Jaaagbot.cogs.{ext[:-3]}")
                             embed.add_field(
-                                name=f"Updated the following Cog(s): `{ext}`",
+                                name=f"Successfully updated Cog: `{ext}`",
                                 value='\uFEFF',
                                 inline=False
                             )
                         except Exception as e:
                             embed.add_field(
-                                name=f"Failed to update: `{ext}`",
+                                name=f"Failed to update Cog: `{ext}`",
                                 value=e,
                                 inline=False
                             )
@@ -197,12 +200,12 @@ class Dev(commands.Cog):
         else:
             async with ctx.typing():
                 embed = discord.Embed(
-                    title="Updating all cogs!",
-                    color=0x808080,
+                    title="Updated a Cog!",
+                    color=0x33fcff,
                     timestamp=ctx.message.created_at
                 )
                 ext = f"{cog.lower()}.py"
-                if not os.path.exists(f"./cogs/{ext}"):
+                if not os.path.exists(f"Jaaagbot/cogs/{ext}"):
                     embed.add_field(
                         name=f"Failed to update: `{ext}`",
                         value="This cog does not exist.",
@@ -214,7 +217,7 @@ class Dev(commands.Cog):
                         self.bot.unload_extension(f"Jaaagbot.cogs.{ext[:-3]}")
                         self.bot.load_extension(f"Jaaagbot.cogs.{ext[:-3]}")
                         embed.add_field(
-                            name=f"Updated the following Cog(s): `{ext}`",
+                            name=f"Successfully updated Cog: `{ext}`",
                             value='\uFEFF',
                             inline=False
                         )
@@ -226,6 +229,55 @@ class Dev(commands.Cog):
                             inline=False
                         )
                 await ctx.send(embed=embed)
+
+
+    # A command to load my error handler
+    @commands.command(aliases=["l-l"])
+    @commands.is_owner()
+    async def load_listener(self, ctx, extension):
+        self.bot.load_extension(
+          f'Jaaagbot.core.{extension}'
+          )
+        await ctx.send(
+          f"`{extension}` Listener has been loaded."
+        )
+
+
+    # A command to unload my error handler
+    @commands.command(aliases=["un-l"])
+    @commands.is_owner()
+    async def unload_listener(self, ctx, extension):
+        self.bot.unload_extension(
+          f'Jaaagbot.core.{extension}'
+          )
+        await ctx.send(
+            f"`{extension}` Listener has been unloaded."
+        )
+
+
+    # A command to reload my error handler
+    @commands.command(aliases=["re-l"])
+    @commands.is_owner()
+    async def update_listener(self, ctx, extension):
+        self.bot.unload_extension(
+          f"Jaaagbot.core.{extension}"
+        )
+        self.bot.load_extension(
+          f'Jaaagbot.core.{extension}'
+          )
+        await ctx.send(
+          f"`{extension}` Listener has been updated."
+        )
+
+
+    # A command to logout the bot
+    @commands.command()
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        await ctx.send(
+          "logging out...  :wave:"
+          )
+        await ctx.self.bot.close()
 
 
 # Adds the extention

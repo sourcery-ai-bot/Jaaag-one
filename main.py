@@ -115,9 +115,9 @@ async def on_message(message):
     await bot.process_commands(message)
     
 
-@bot.command(aliases=["load-c"])
+@bot.command()
 @commands.is_owner()
-async def load_cog(ctx, extension):
+async def load(ctx, extension):
     bot.load_extension(
       f'Jaaagbot.cogs.{extension}'
       )
@@ -126,74 +126,15 @@ async def load_cog(ctx, extension):
     )
 
 
-@bot.command(aliases=["load-l"])
+@bot.command()
 @commands.is_owner()
-async def load_listener(ctx, extension):
-    bot.load_extension(
-      f'Jaaagbot.core.{extension}'
-      )
-    await ctx.send(
-      f"`{extension}` Listener has been loaded."
-    )
-
-
-@bot.command(aliases=["unload-c"])
-@commands.is_owner()
-async def unload_cog(ctx, extension):
+async def unload(ctx, extension):
     bot.unload_extension(
       f'Jaaagbot.cogs.{extension}'
       )
     await ctx.send(
         f"`{extension}` Cog has been unloaded."
     )
-
-
-@bot.command(aliases=["unload-l"])
-@commands.is_owner()
-async def unload_listener(ctx, extension):
-    bot.unload_extension(
-      f'Jaaagbot.core.{extension}'
-      )
-    await ctx.send(
-        f"`{extension}` Listener has been unloaded."
-    )
-
-
-@bot.command(aliases=["reload-c"])
-@commands.is_owner()
-async def update_cog(ctx, extension):
-    bot.unload_extension(
-      f'Jaaagbot.cogs.{extension}'
-      )
-    bot.load_extension(
-      f'Jaaagbot.cogs.{extension}'
-      )
-    await ctx.send(
-      f"`{extension}` Cog has been updated."
-    )
-
-
-@bot.command(aliases=["reload-l"])
-@commands.is_owner()
-async def update_listener(ctx, extension):
-    bot.unload_extension(
-      f"Jaaagbot.core.{extension}"
-    )
-    bot.load_extension(
-      f'Jaaagbot.core.{extension}'
-      )
-    await ctx.send(
-      f"`{extension}` Listener has been updated."
-    )
-
-
-@bot.command()
-@commands.is_owner()
-async def shutdown(ctx):
-    await ctx.send(
-      "logging out... bye!"
-      )
-    await ctx.bot.close()
 
 
 keep_alive()
