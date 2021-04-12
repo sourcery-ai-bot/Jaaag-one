@@ -177,10 +177,11 @@ class utility(commands.Cog):
           inline=False
         )
         embed.add_field(
-          name=f"Roles [{len(roles)}]",
-          value=" **,** ".join([role.mention for role in roles]),
-          inline=False
+            name=f"Roles [{len(roles)}]",
+            value=" **,** ".join(role.mention for role in roles),
+            inline=False,
         )
+
         embed.add_field(
           name="Top Role:", 
           value=member.top_role, 

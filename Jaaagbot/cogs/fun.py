@@ -69,12 +69,12 @@ class Fun(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def say(self, ctx, *, arg=None):
-      if arg == None:
-        await ctx.send(
-          "There's nothing to say!"
-        )
-      else:
-        await ctx.send(arg)
+        if arg is None:
+            await ctx.send(
+              "There's nothing to say!"
+            )
+        else:
+            await ctx.send(arg)
 
     # A simple command that replies back to the user
     @commands.command()
@@ -92,7 +92,7 @@ class Fun(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wanted(self, ctx, user: discord.Member = None):
-        if user == None:
+        if user is None:
             user = ctx.author
 
         wanted = Image.open("wanted.jpg")
