@@ -338,31 +338,30 @@ class Mod(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True)
     async def purge(self, ctx, messages: int):
-        data = await self.bot.modlog.get_by_id(ctx.guild.id)
-        if not data or "modlog" not in data:
-          await ctx.send(
-            f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
-          )
-        else:
-            modlogchannel = data["modlog"]
-            modlog = await self.bot.fetch_channel(modlogchannel)
-            if messages > 99:
-                messages = 99
-            await ctx.channel.purge(limit=messages + 1)
-            await ctx.send(f'Done. {messages} messages were purged.',
-                          delete_after=3)
-            embed = discord.Embed(
-              title="Purge | :speech_balloon:",
-              description=f"{messages} messages have been purged in {ctx.channel.mention}",
-              color=0xe67e22,
-              timestamp=datetime.utcnow()
-            )
-            embed.add_field(
-              name="Moderator:",
-              value=f"{ctx.author} ({ctx.author.id})",
-              inline=False
-            )
-            await modlog.send(embed=embed)
+    	data = await self.bot.modlog.get_by_id(ctx.guild.id)
+    	if not data or "modlog" not in data:
+    		await ctx.send(
+    		  f"This command requires a modlog to be setup first. Server admins can set one up by typing `{ctx.prefix}modlogset [channel]`."
+    		)
+    	else:
+    		modlogchannel = data["modlog"]
+    		modlog = await self.bot.fetch_channel(modlogchannel)
+    		messages = min(messages, 99)
+    		await ctx.channel.purge(limit=messages + 1)
+    		await ctx.send(f'Done. {messages} messages were purged.',
+    		              delete_after=3)
+    		embed = discord.Embed(
+    		  title="Purge | :speech_balloon:",
+    		  description=f"{messages} messages have been purged in {ctx.channel.mention}",
+    		  color=0xe67e22,
+    		  timestamp=datetime.utcnow()
+    		)
+    		embed.add_field(
+    		  name="Moderator:",
+    		  value=f"{ctx.author} ({ctx.author.id})",
+    		  inline=False
+    		)
+    		await modlog.send(embed=embed)
     
     # A command to change the nickname of a user
     @commands.command(aliases=["rename"])
@@ -409,25 +408,23 @@ class Mod(commands.Cog):
     # Error hanler for the nick command
     @nick.error
     async def nick_error(self, ctx, error):
-        # error handler
-        if isinstance(error, commands.CheckFailure):
-            return
-        elif isinstance(error, commands.NoPrivateMessage):
-            return
-        elif isinstance(error, commands.BotMissingPermissions):
-            embed = discord.Embed(
-                color=discord.Color.red(),
-                title="I am missing a necessary permission.",
-                description="Please make sure I have the manage nicknames permission.",
-            )
-            await ctx.send(embed=embed)
-        elif isinstance(error, commands.CommandError):
-            embed = discord.Embed(
-                color=discord.Color.red(), title="Something didn't go quite right...", description=" "
-            )
-            embed.set_author(name=f"{ctx.message.author}", icon_url=f"{ctx.message.author.avatar_url}")
-            await ctx.send(embed=embed)
-            log.exception(error, exc_info=error)
+    	    # error handler
+    	if isinstance(error, (commands.CheckFailure, commands.NoPrivateMessage)):
+    		return
+    	elif isinstance(error, commands.BotMissingPermissions):
+    		embed = discord.Embed(
+    		    color=discord.Color.red(),
+    		    title="I am missing a necessary permission.",
+    		    description="Please make sure I have the manage nicknames permission.",
+    		)
+    		await ctx.send(embed=embed)
+    	elif isinstance(error, commands.CommandError):
+    		embed = discord.Embed(
+    		    color=discord.Color.red(), title="Something didn't go quite right...", description=" "
+    		)
+    		embed.set_author(name=f"{ctx.message.author}", icon_url=f"{ctx.message.author.avatar_url}")
+    		await ctx.send(embed=embed)
+    		log.exception(error, exc_info=error)
             
     
     # A command to lock a text/voice channel

@@ -91,10 +91,11 @@ class Document:
         Params:
          - dict (Dictionary) : The dict to insert
         """
-        if await self.__get_raw(dict["_id"]) != None:
-            await self.update_by_id(dict)
-        else:
+        if await self.__get_raw(dict["_id"]) is None:
             await self.db.insert_one(dict)
+
+        else:
+            await self.update_by_id(dict)
 
     async def update_by_id(self, dict):
         """
