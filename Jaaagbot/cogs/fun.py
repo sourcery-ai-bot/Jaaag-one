@@ -27,7 +27,9 @@ class Fun(commands.Cog):
         )
 
     # A fun 8ball command
-    @commands.command(aliases=['8ball'])
+    @commands.command(aliases=["8ball", "8"],
+    brief="Ask questions to 8ball",
+    help="ask a question to le 8ball when in doubt.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def eightball(self, ctx, *, question):
@@ -49,7 +51,8 @@ class Fun(commands.Cog):
         )
 
     # A fun command that sends trending memes from a subreddit as an embed
-    @commands.command()
+    @commands.command(brief="Send memes",
+    help="sends trending memes\nfrom a subreddit.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def meme(self, ctx):
@@ -65,7 +68,9 @@ class Fun(commands.Cog):
                 await ctx.send(embed=embed)
 
     # This command repeats the author's message
-    @commands.command(aliases=["echo"])
+    @commands.command(aliases=["echo"],
+    brief="Echo your message",
+    help="makes the bot repeat your message.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def say(self, ctx, *, arg=None):
@@ -77,7 +82,8 @@ class Fun(commands.Cog):
         await ctx.send(arg)
 
     # A simple command that replies back to the user
-    @commands.command()
+    @commands.command(brief="hey man",
+    help="say hello to jaaag and it replies back.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hello(self, ctx):
@@ -88,7 +94,8 @@ class Fun(commands.Cog):
         )
 
     # This is my favourite command so far, It takes a template named 'wanted.jpg' and it taked the avatar of the user who ran the command or of a user who is mentioned and pastes it in the middle, creating a wanted poster.
-    @commands.command()
+    @commands.command(brief="Excuse me ur under arrest",
+      help="slaps the user's avatar onto a wanted poster.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wanted(self, ctx, user: discord.Member = None):
@@ -110,7 +117,9 @@ class Fun(commands.Cog):
         await ctx.send(file=discord.File("profile.jpg"))
 
     # A command throws an roast at the user that the author mentions, if the user is none, then the author gets roasted and if the author tries the bot to get to insult itself, the bot will really badly roast the author.
-    @commands.command(aliases=["insult"])
+    @commands.command(aliases=["insult"],
+    brief="Insult someone",
+    help="if no one is mentioned, the author\nwill get insulted.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def roast(self, ctx, *, member: discord.Member = None):
@@ -137,7 +146,8 @@ class Fun(commands.Cog):
             )
 
     # A modified version of a slot machine command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
-    @commands.command()
+    @commands.command(brief="Try your luck with the slot machine",
+    help="take your chances at the ridiculously\nrigged slot machine.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def slots(self, ctx):
@@ -196,7 +206,9 @@ class Fun(commands.Cog):
             await ctx.send(embed=emc)
 
     # A modified version of a hotrate command that can be found here: https://github.com/AlexFlipnote/discord_bot.py
-    @commands.command(aliases=["hotrate", "hotr8"])
+    @commands.command(aliases=["hotrate", "hotr8"],
+    brief="See how hot you are",
+    help="mention someone to check their hotness.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def howhot(self, ctx, *, user: discord.Member = None):

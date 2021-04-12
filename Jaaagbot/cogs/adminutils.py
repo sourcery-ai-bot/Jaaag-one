@@ -19,7 +19,9 @@ class Adminutils(commands.Cog):
         )
 
     # A command to set the guild prefix for the bot
-    @commands.command(aliases=["pre"])
+    @commands.command(aliases=["pre"],
+    brief="Set the prefix",
+    help="Set the guild's prefix for the bot.")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def setprefix(self, ctx, prefix):
@@ -33,7 +35,9 @@ class Adminutils(commands.Cog):
         )
     
     # A command to reset the guild prefix for the bot
-    @commands.command()
+    @commands.command(aliases=["reprefix"],
+    brief="Reset the prefix",
+    help="Reset the guild prefix for the bot to `..`")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def resetprefix(self, ctx):
@@ -51,12 +55,13 @@ class Adminutils(commands.Cog):
         self.last_msg = message
 
     # A command to show the author and the content of the last deleted message in a text channel
-    @commands.command()
+    @commands.command(
+    brief="See the last deleted message",
+    help="See the last deleted message in\na text channel and it's author.")
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def snipe(self, ctx):
-        """A command to snipe delete messages."""
         if not self.last_msg:
             await ctx.send(
               "There is no message to snipe!"
@@ -78,7 +83,9 @@ class Adminutils(commands.Cog):
         		
     
     # A command to set a channel to log moderation events to
-    @commands.command(aliases=["mls"])
+    @commands.command(aliases=["mls"],
+    brief="Set a modlog channel",
+    help="Sets a channel for mod events to be posted to.")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     @commands.bot_has_permissions(manage_guild=True)
@@ -96,7 +103,9 @@ class Adminutils(commands.Cog):
       )
 
     # A command to set the muterole for the guild. this will be used in the updated mute commmand
-    @commands.command(aliases=["mrs", "muteset"])
+    @commands.command(aliases=["mrs", "muteset"],
+    brief="Set the muterole",
+    help="Sets the role to be assigned when the mute command is used.")
     @commands.guild_only()
     @commands.has_permissions(manage_roles=True)
     @commands.bot_has_permissions(manage_roles=True)

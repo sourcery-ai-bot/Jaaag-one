@@ -46,7 +46,7 @@ class Mod(commands.Cog):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     # A command to kick a user from a server, can only be used by server moderators
-    @commands.command()
+    @commands.command(description="Kick a user from the guild")
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
@@ -534,4 +534,3 @@ class Mod(commands.Cog):
 # Adds the extention
 def setup(bot: commands.Bot):
     bot.add_cog(Mod(bot))
-    

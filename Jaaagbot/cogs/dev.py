@@ -150,7 +150,9 @@ class Dev(commands.Cog):
         await logchannel.send(embed=embed)
 
     # A command that makes the bot leave a server. Only works for the bot owner(me).
-    @commands.command(aliases=["remove"])
+    @commands.command(aliases=["remove"],
+    brief="Leave a guild",
+    help="makes the bot leave a server.")
     @commands.is_owner()
     async def leave(self, ctx, id: str):
       if id == 'this':
@@ -167,11 +169,12 @@ class Dev(commands.Cog):
             )
         )
     
-
     # Overly complicated cog reload command built watching this video: https://www.youtube.com/watch?v=DFLyOPkHa1w
-    @commands.command()
+    @commands.command(aliases=["reload"],
+    brief="Reload a Cog",
+    help="reloads all or a specific Cog.")
     @commands.is_owner()
-    async def updatetest(self, ctx, cog=None):
+    async def update(self, ctx, cog=None):
         if not cog:
             async with ctx.typing():
                 embed = discord.Embed(
@@ -230,9 +233,10 @@ class Dev(commands.Cog):
                         )
                 await ctx.send(embed=embed)
 
-
     # A command to load my error handler
-    @commands.command(aliases=["l-l"])
+    @commands.command(aliases=["up-l"],
+    brief="Load a listener",
+    help="loads a listener from the bot's core.")
     @commands.is_owner()
     async def load_listener(self, ctx, extension):
         self.bot.load_extension(
@@ -242,9 +246,10 @@ class Dev(commands.Cog):
           f"`{extension}` Listener has been loaded."
         )
 
-
     # A command to unload my error handler
-    @commands.command(aliases=["un-l"])
+    @commands.command(aliases=["un-l"],
+    brief="Unload a Listener",
+    help="unloads a listener from the bot's core.")
     @commands.is_owner()
     async def unload_listener(self, ctx, extension):
         self.bot.unload_extension(
@@ -254,9 +259,10 @@ class Dev(commands.Cog):
             f"`{extension}` Listener has been unloaded."
         )
 
-
     # A command to reload my error handler
-    @commands.command(aliases=["re-l"])
+    @commands.command(aliases=["re-l"],
+    brief="Reload a listener",
+    help="reloads a listener from the bot's core.")
     @commands.is_owner()
     async def update_listener(self, ctx, extension):
         self.bot.unload_extension(
@@ -269,9 +275,9 @@ class Dev(commands.Cog):
           f"`{extension}` Listener has been updated."
         )
 
-
     # A command to logout the bot
-    @commands.command()
+    @commands.command(brief="Shut the bot down",
+    help="logs out and stops the bot.")
     @commands.is_owner()
     async def shutdown(self, ctx):
         await ctx.send(

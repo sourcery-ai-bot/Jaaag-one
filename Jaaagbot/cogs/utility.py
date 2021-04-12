@@ -23,7 +23,8 @@ class utility(commands.Cog):
 
  
     # A command to get the invite link for the bot
-    @commands.command()
+    @commands.command(brief="Invite the bot",
+    help="gives a link to invite the bot to your server.")
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def invite(self, ctx):
         embed = discord.Embed(
@@ -49,7 +50,9 @@ class utility(commands.Cog):
 
 
     # A command to view dome information about the server
-    @commands.command(aliases=["si", "guildinfo"])
+    @commands.command(aliases=["si", "guildinfo"],
+    brief="Get info about the server",
+    help="gives detailed information about the server.")
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def serverinfo(self, ctx):
@@ -113,7 +116,9 @@ class utility(commands.Cog):
 
 
     # A simple command for getting information about a user
-    @commands.command(aliases=["ui", "whois"])
+    @commands.command(aliases=["ui", "whois"],
+    brief="Get info about someone",
+    help="gives detailed information about a user.")
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def userinfo(self, ctx, member: discord.Member = None):
@@ -191,7 +196,9 @@ class utility(commands.Cog):
 
 
     # A simple command to get the profile picture of a user
-    @commands.command()
+    @commands.command(aliases=["pfp"],
+    brief="See the avatar of a user",
+    help="shows a bigger version of a user's avatar.")
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def avatar(self, ctx, member: discord.Member):
@@ -209,7 +216,8 @@ class utility(commands.Cog):
 
 
     # A command to get the bot's websocket latency
-    @commands.command()
+    @commands.command(brief="ping the bot",
+    help="get the bot's average websocket\nlatency")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def ping(self, ctx: commands.Context):
         message = await ctx.send("Testing Ping...")
@@ -220,7 +228,8 @@ class utility(commands.Cog):
 
 
     # A command to 'test' if the bot is responding
-    @commands.command(name="test")
+    @commands.command(brief="Test if the bot responds",
+    help="if the bot responds, then all is good.")
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def test(self, ctx: commands.Context):
@@ -229,7 +238,9 @@ class utility(commands.Cog):
         )
 
 
-    @commands.command()
+    @commands.command(aliases=["votepls"],
+    brief="Vote for the bot",
+    help="gives links to top.gg so you can vote for jaaag.")
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def vote(self, ctx):
         embed = discord.Embed(color=0x33fcff, timestamp=ctx.message.created_at)

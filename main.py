@@ -32,10 +32,12 @@ async def get_prefix(bot, message):
     except:
         return commands.when_mentioned_or("..")(bot, message)
 
+intents = discord.Intents.all()
 
 bot = commands.Bot(
     command_prefix=get_prefix, case_insensitive=True, owner_id=722168161713127435,
-    help_command=None
+    help_command=None,
+    intents=intents
 )
 bot.config_token = os.getenv("TOKEN")
 bot.connection_url = os.getenv("MONGO")
@@ -115,7 +117,8 @@ async def on_message(message):
     await bot.process_commands(message)
     
 
-@bot.command()
+@bot.command(brief="Load a Cog",
+help="loads a specific Cog.")
 @commands.is_owner()
 async def load(ctx, extension):
     bot.load_extension(
@@ -126,7 +129,8 @@ async def load(ctx, extension):
     )
 
 
-@bot.command()
+@bot.command(brief="Unload a Cog",
+help="unloads a specific Cog.")
 @commands.is_owner()
 async def unload(ctx, extension):
     bot.unload_extension(
