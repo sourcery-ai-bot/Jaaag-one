@@ -14,18 +14,14 @@ class Help(commands.Cog):
 
         full_invoke = command.qualified_name.replace(command.name, "")
 
-        signature = f"{ctx.prefix}{full_invoke}{cmd_invoke} {command.signature}"
-        return signature
+        return f"{ctx.prefix}{full_invoke}{cmd_invoke} {command.signature}"
 
     async def return_filtered_commands(self, walkable, ctx):
         filtered = []
 
         for c in walkable.walk_commands():
             try:
-                if c.hidden:
-                    continue
-
-                elif c.parent:
+                if c.hidden or c.parent:
                     continue
 
                 await c.can_run(ctx)
